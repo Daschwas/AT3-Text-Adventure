@@ -12,8 +12,36 @@ def show_instructions():
           "and 'Look'.")
     print("- Use 'Move' in combination with 'North', 'East', 'South', and 'West' to explore the map.")
     print("- Your ultimate goal: Escape. Survive. Shop.")
+    current_room = 'Food Court'
+    current_room = choice_manager(current_room)
 
-current_room = 'Food Court'
+def choice_manager(current_room):
+    while True:
+        choice = input("Where would you like to move? ").lower()
+        if choice == "north" and 'North' in rooms[current_room]:
+            move_command(choice)
+            current_room = rooms[current_room]['North']
+            print(f"You have arrived in the {current_room}.")
+            break
+        elif choice == "east" and 'East' in rooms[current_room]:
+            move_command(choice)
+            current_room = rooms[current_room]['East']
+            print(f"You have arrived in the {current_room}.")
+            break
+        elif choice == "south" and 'South' in rooms[current_room]:
+            move_command(choice)
+            current_room = rooms[current_room]['South']
+            print(f"You have arrived in the {current_room}.")
+            break
+        elif choice == "west" and 'West' in rooms[current_room]:
+            move_command(choice)
+            current_room = rooms[current_room]['West']
+            print(f"You have arrived in the {current_room}.")
+            break
+        else:
+            print("Invalid choice. Try again.")
+    return current_room
+
 
 
 rooms = {
@@ -57,3 +85,5 @@ def talk_command(person):
 
 def look_command(direction):
     print(f"You looked {direction}")
+
+show_instructions()
