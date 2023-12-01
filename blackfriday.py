@@ -17,8 +17,7 @@ def start_game():
     clothing_boutique = ClothingBoutique()
     electronics_store = ElectronicsStore()
     player = create_player(food_court)
-    turn_counter = 100;
-    return player, turn_counter, food_court, lobby, bank, clothing_boutique, electronics_store
+    return player, food_court, lobby, bank, clothing_boutique, electronics_store
 
 
 def create_player(starting_room):
@@ -30,7 +29,7 @@ def create_player(starting_room):
     return new_player
 
 
-def show_instructions():
+def show_introduction():
     """
     Display the welcome message and instructions for the 'Code Black (Friday)' text-based adventure game.
     """
@@ -40,8 +39,9 @@ def show_instructions():
     print("As you check the time, you realize the crowds are growing, and you must navigate the shopping center "
           "strategically to survive and snag a great deal.")
     print("\nInstructions:")
-    print("- Use the following commands in combination with an object or person: 'Get', 'Check', 'Talk', 'Leave', "
+    print("- Use the following commands in combination with an object or person: 'Get', 'Use', 'Check', 'Talk', 'Leave', "
           "and 'Look'.")
+    print("If you are ever stuck, type 'Help' for advice")
     print("- Use 'Move' in combination with 'North', 'East', 'South', and 'West' to explore the map.")
     print("- Your ultimate goal: Escape. Survive. Shop.")
 
@@ -95,16 +95,31 @@ def end_game(self):
     """
     self.game_over = True
 
+def help_command():
+    """
+    Display help information about the game controls.
+    """
+    print("Game Controls:")
+    print("- 'Move': Move to a different room.")
+    print("- 'Talk': Interact with a person in the current room.")
+    print("- 'Look': Examine your surroundings.")
+    print("- 'Leave': Leave the current room/conversation.")
+    print("- 'Get': Pick up an item.")
+    print("- 'Use': Use an item in your inventory.")
+    print("- 'Help': Display this help message.")
+
 
 def main():
-    player, food_court, lobby, bank, clothing_boutique, electronics_store, turn_counter = start_game()
+    player, food_court, lobby, bank, clothing_boutique, electronics_store = start_game()
+    turn_counter = 100
+    show_introduction()
 
     while True:
-        show_instructions()
 
         if not player.game_over and turn_counter >= 0:
+            print(f"You are currently in the {player.room.name}")
             print("What would you like to do?")
-            choice_input = input("Please choose:").lower()
+            choice_input = input("Please choose:").lower().strip()
 
             if choice_input.startswith('move'):
                 move_command(player)
@@ -124,6 +139,8 @@ def main():
             elif choice_input.startswith('use'):
                 #use_command()
                 turn_counter -= 1
+            elif choice_input.startswith('help'):
+                help_command()
             elif choice_input.startswith('wait'):
                 print("You're just hanging around.")
                 turn_counter -= 1
