@@ -43,7 +43,6 @@ def choice_manager(current_room):
     return current_room
 
 
-
 rooms = {
     'Food Court': {'North': 'Lobby', 'East': 'Bank'},
     'Lobby': {'South': 'Food Court', 'East': 'Electronics Store'},
