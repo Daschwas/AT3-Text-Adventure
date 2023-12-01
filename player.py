@@ -9,10 +9,12 @@ class Player:
              Name - The name of the non player character.
              Items - A list that shows the current items held by the player.
              Room - Keeps track of what room the player is currently in.
+             game_over - Flag state that indicates whether the player has lost the game or not.
         """
         self.name = name
         self.items = []
         self.room = room
+        self.game_over = False
 
     def move_rooms(self, direction):
         """

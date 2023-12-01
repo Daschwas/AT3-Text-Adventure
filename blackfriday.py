@@ -17,7 +17,8 @@ def start_game():
     clothing_boutique = ClothingBoutique()
     electronics_store = ElectronicsStore()
     player = create_player(food_court)
-    return player, food_court, lobby, bank, clothing_boutique, electronics_store
+    turn_counter = 100;
+    return player, turn_counter, food_court, lobby, bank, clothing_boutique, electronics_store
 
 
 def create_player(starting_room):
@@ -46,7 +47,7 @@ def show_instructions():
 
 
 
-def choice_manager(player):
+def move_command(player):
     """
        Manage the player's movement between rooms based on user input.
 
@@ -73,10 +74,6 @@ This list includes the available cardinal directions that players can use to mov
 
 look_directions = ['Up', 'Down', 'Left', 'Right']
 
-
-def move_command(direction):
-    print(f"You moved {direction}.")
-
 def get_command(item):
     print(f"You obtained {item}!")
 
@@ -92,10 +89,46 @@ def talk_command(person):
 def look_command(direction):
     print(f"You looked {direction}")
 
+def end_game(self):
+    """
+    End the game by setting the game_over flag.
+    """
+    self.game_over = True
+
+
 def main():
-    player, food_court, lobby, bank, clothing_boutique, electronics_store = start_game()
+    player, food_court, lobby, bank, clothing_boutique, electronics_store, turn_counter = start_game()
+
     while True:
         show_instructions()
-        choice_manager(player)
 
+        if not player.game_over and turn_counter >= 0:
+            print("What would you like to do?")
+            choice_input = input("Please choose:").lower()
+
+            if choice_input.startswith('move'):
+                move_command(player)
+                turn_counter -= 1
+            elif choice_input.startswith('talk'):
+                talk_command()
+                turn_counter -= 1
+            elif choice_input.startswith('look'):
+                look_command()
+                turn_counter -= 1
+            elif choice_input.startswith('leave'):
+                #leave_command()
+                turn_counter -= 1
+            elif choice_input.startswith('get'):
+                get_command()
+                turn_counter -= 1
+            elif choice_input.startswith('use'):
+                #use_command()
+                turn_counter -= 1
+            elif choice_input.startswith('wait'):
+                print("You're just hanging around.")
+                turn_counter -= 1
+            else:
+                print("That is not a valid option")
+        elif turn_counter == 0:
+                print("Game over!")
 main()
