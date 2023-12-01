@@ -1,9 +1,11 @@
+from game_map import *
+
 class Player:
     """
     This class represents the user/player character.
     """
 
-    def __init__(self, name, room):
+    def __init__(self, name, room, game_map):
         """
         Parameters:
              Name - The name of the non player character.
@@ -15,6 +17,8 @@ class Player:
         self.items = []
         self.room = room
         self.game_over = False
+        self.game_map = game_map
+        self.current_coordinates = (1, 1)
 
     def move_rooms(self, direction):
         """
@@ -23,10 +27,26 @@ class Player:
         Parameters:
             Direction -  The direction in which the player wants to move.
         """
-        if direction in self.room.exits:
-            new_room = self.room.exits[direction]
-            print(f"You moved {direction}.")
+
+        current_row, current_col = self.current_coordinates
+        new_row, new_col = current_row, current_col
+
+        if direction == 'north':
+            new_row -= 1
+        elif direction == 'south':
+            new_row += 1
+        elif direction == 'east':
+            new_col += 1
+        elif direction == 'west':
+            new_col -= 1
+
+        new_coordinates = (new_row, new_col)
+        new_room = self.game_map.get_room_at(*new_coordinates)
+
+        if new_room:
+            self.current_coordinates = new_coordinates
             self.room = new_room
-            print(f"You have arrived in the {self.room.name}.")
+            print(f"You moved {direction}.")
+            print(f"You have arrived in the {new_room.name}.")
         else:
             print("Invalid direction. Try again.")

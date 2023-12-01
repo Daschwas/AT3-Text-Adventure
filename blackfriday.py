@@ -59,18 +59,12 @@ def move_command(player):
     while True:
         choice = input("Where would you like to move?").lower()
         print(choice)
-        if choice in directions:
+        if choice in {'north', 'south', 'east', 'west'}:
             player.move_rooms(choice)
             break
         else:
             print("Invalid choice. Try again.")
 
-directions = ['north', 'east', 'south', 'west']
-"""
-List of cardinal directions for navigating around the game map.
-
-This list includes the available cardinal directions that players can use to move between rooms.
-"""
 
 look_directions = ['Up', 'Down', 'Left', 'Right']
 

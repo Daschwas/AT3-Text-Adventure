@@ -3,7 +3,7 @@ class Room:
     The intention of this class would be to act as a container for the NPCs and objects that are
     located within the room as well as keep track of where the palyer is located.
     """
-    def __init__(self, name, description):
+    def __init__(self, name, description, row, column):
         """
         Parameters:
             Name - The name of the room.
@@ -15,40 +15,48 @@ class Room:
         self.items = []
         self.people = []
         self.description = description
-        self.exits = {}
+        self.row = row
+        self.column = column
+        self.position = [self.row, self.column]
+        #self.exits = {}
+
+        def get_coordinates(self):
+            return self.row, self.column
 
 
 class FoodCourt(Room):
     def __init__(self):
         super().__init__("Food Court", "A food court filled with vendors and stores. There is a vending machine "
                                        "dispensing drinks in the corner and a man sitting at a bench. He seems to work"
-                                       "here and has discarded his staff uniform.")
-        self.exits = {'north': Lobby, 'east': Bank}
+                                       "here and has discarded his staff uniform.", 2, 1)
+
+        #self.exits = {'north': Lobby, 'east': Bank}
 
 
 class Lobby(Room):
     def __init__(self):
-        super().__init__("Lobby", "A spacious lobby with various shops and entrances. People are bustling around.")
-        self.exits = {'south': FoodCourt, 'east': ElectronicsStore}
+        super().__init__("Lobby", "A spacious lobby with various shops and entrances. People are bustling around.", 1, 1)
+
+        #self.exits = {'south': FoodCourt, 'east': ElectronicsStore}
 
 
 class Bank(Room):
     def __init__(self):
         super().__init__("Bank", "A bank with counters and a waiting area. A security guard is standing at the "
-                                 "entrance.")
-        self.exits = {'north': ElectronicsStore, 'west': FoodCourt, 'south': ClothingBoutique}
+                                 "entrance.", 2, 2)
+        #self.exits = {'north': ElectronicsStore, 'west': FoodCourt, 'south': ClothingBoutique}
 
 
 class ElectronicsStore(Room):
     def __init__(self):
-        super().__init__("Electronics Store", "A store filled with the latest gadgets and electronics.")
-        self.exits = {'west': Lobby, 'south': Bank}
+        super().__init__("Electronics Store", "A store filled with the latest gadgets and electronics.", 1,2)
+        #self.exits = {'west': Lobby, 'south': Bank}
 
 
 class ClothingBoutique(Room):
     def __init__(self):
-        super().__init__("Clothing Boutique", "A fashionable boutique with racks of clothes and a fitting room.")
-        self.exits = {'north': Bank}
+        super().__init__("Clothing Boutique", "A fashionable boutique with racks of clothes and a fitting room.", 3, 2)
+        #self.exits = {'north': Bank}
 
 """
 Instances of all the rooms in the game.
