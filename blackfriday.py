@@ -1,3 +1,34 @@
+from room import *
+from player import *
+from backpack import *
+from item import *
+
+
+def start_game():
+    """
+        Initialize the game by creating instances of rooms, defining their exits, and creating the player character.
+
+        Returns:
+            Player: The player character for the game.
+    """
+    food_court = FoodCourt()
+    lobby = Lobby()
+    bank = Bank()
+    clothing_boutique = ClothingBoutique()
+    electronics_store = ElectronicsStore()
+    player = create_player(food_court)
+    return player, food_court, lobby, bank, clothing_boutique, electronics_store
+
+
+def create_player(starting_room):
+    player_name = input("Enter your name: ")
+    print(f"{starting_room.name}")
+    new_player = Player(player_name, starting_room)
+    print(f"{new_player.room.name}")
+    print(f"{new_player.room.description}")
+    return new_player
+
+
 def show_instructions():
     """
     Display the welcome message and instructions for the 'Code Black (Friday)' text-based adventure game.
@@ -12,52 +43,28 @@ def show_instructions():
           "and 'Look'.")
     print("- Use 'Move' in combination with 'North', 'East', 'South', and 'West' to explore the map.")
     print("- Your ultimate goal: Escape. Survive. Shop.")
-    current_room = 'Food Court'
-    current_room = choice_manager(current_room)
 
-def choice_manager(current_room):
+
+
+def choice_manager(player):
+    """
+       Manage the player's movement between rooms based on user input.
+
+       Parameters:
+            player (Player): The player.
+    """
+    current_room = player.room
+    print(f"You are in the {current_room.name}")
     while True:
-        choice = input("Where would you like to move? ").lower()
-        if choice == "north" and 'North' in rooms[current_room]:
-            move_command(choice)
-            current_room = rooms[current_room]['North']
-            print(f"You have arrived in the {current_room}.")
-            break
-        elif choice == "east" and 'East' in rooms[current_room]:
-            move_command(choice)
-            current_room = rooms[current_room]['East']
-            print(f"You have arrived in the {current_room}.")
-            break
-        elif choice == "south" and 'South' in rooms[current_room]:
-            move_command(choice)
-            current_room = rooms[current_room]['South']
-            print(f"You have arrived in the {current_room}.")
-            break
-        elif choice == "west" and 'West' in rooms[current_room]:
-            move_command(choice)
-            current_room = rooms[current_room]['West']
-            print(f"You have arrived in the {current_room}.")
+        choice = input("Where would you like to move?").lower()
+        print(choice)
+        if choice in directions:
+            player.move_rooms(choice)
             break
         else:
             print("Invalid choice. Try again.")
-    return current_room
 
-
-rooms = {
-    'Food Court': {'North': 'Lobby', 'East': 'Bank'},
-    'Lobby': {'South': 'Food Court', 'East': 'Electronics Store'},
-    'Bank': {'North': 'Electronics Store', 'West': 'Food Court', 'South': 'Clothing Boutique'},
-    'Electronics Store': {'West': 'Lobby', 'South': 'Bank'},
-    'Clothing Boutique': {'North': 'Bank'},
-}
-"""
-Dictionary representing the layout of rooms in the shopping center.
-
-Each room is a key in the dictionary, and its value is another dictionary describing the bordering rooms in each 
-cardinal direction.
-"""
-
-directions = ['North', 'East', 'South', 'West']
+directions = ['north', 'east', 'south', 'west']
 """
 List of cardinal directions for navigating around the game map.
 
@@ -85,4 +92,10 @@ def talk_command(person):
 def look_command(direction):
     print(f"You looked {direction}")
 
-show_instructions()
+def main():
+    player, food_court, lobby, bank, clothing_boutique, electronics_store = start_game()
+    while True:
+        show_instructions()
+        choice_manager(player)
+
+main()

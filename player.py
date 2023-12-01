@@ -14,5 +14,17 @@ class Player:
         self.items = []
         self.room = room
 
+    def move_rooms(self, direction):
+        """
+        Move the player to a new room based on the specified direction.
 
-player = Player("Person", "Food Court")
+        Parameters:
+            Direction -  The direction in which the player wants to move.
+        """
+        if direction in self.room.exits:
+            new_room = self.room.exits[direction]
+            print(f"You moved {direction}.")
+            self.room = new_room
+            print(f"You have arrived in the {self.room.name}.")
+        else:
+            print("Invalid direction. Try again.")
