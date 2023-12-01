@@ -17,7 +17,8 @@ def start_game():
     clothing_boutique = ClothingBoutique()
     electronics_store = ElectronicsStore()
     player = create_player(food_court)
-    return player, food_court, lobby, bank, clothing_boutique, electronics_store
+    backpack = BackPack([])
+    return player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack
 
 
 def create_player(starting_room):
@@ -104,7 +105,7 @@ def help_command():
 
 
 def main():
-    player, food_court, lobby, bank, clothing_boutique, electronics_store = start_game()
+    player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack= start_game()
     turn_counter = 100
     show_introduction()
 

@@ -42,6 +42,11 @@ class BottledWater(Item):
 
 class BlankCard(Item):
     def __init__(self, name):
-        super().__init__(name, owner=None, description="A blank ID card that belongs to Josh. It's seen better days.")
+        super().__init__(name, description="A blank ID card that belongs to Josh. It's seen better days.")
+        self.can_get = True
+
+class Scarf(Item):
+    def __init__(self, name):
+        super().__init__(name, "A cozy and stylish scarf.")
         self.can_get = True
 

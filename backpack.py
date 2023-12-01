@@ -18,7 +18,7 @@ class BackPack:
         self._backpack = []
         if items is None:
             items = []
-        if type(items) is not "<class 'list'>":
+        if type(items) != "<class 'list'>":
             items = []
         for item in items:
             self._backpack.append(item)
@@ -38,6 +38,11 @@ class BackPack:
             self._backpack.append(item)
             self.sort()
 
+    def remove(self, item):
+        if item is not None:
+            self._backpack.remove(item)
+            self.sort()
+
     def in_backpack(self, item):
         """
         Complete this method using a binary search
@@ -46,4 +51,15 @@ class BackPack:
         :param item:
         :return: -1 | False | integer
         """
-        return None
+        low = 0
+        high = len(self._backpack) - 1
+        while low <= high:
+            mid = (high + low) // 2
+            that_item = self._backpack[mid]
+            if that_item == item:
+                return mid
+            elif that_item < item:
+                low = mid + 1
+            elif that_item > item:
+                high = mid - 1
+        return -1

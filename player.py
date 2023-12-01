@@ -1,11 +1,12 @@
-from game_map import *
+from game_map import GameMap
 
 class Player:
     """
     This class represents the user/player character.
     """
+    game_map = GameMap()
 
-    def __init__(self, name, room, game_map):
+    def __init__(self, name, room):
         """
         Parameters:
              Name - The name of the non player character.
@@ -14,11 +15,9 @@ class Player:
              game_over - Flag state that indicates whether the player has lost the game or not.
         """
         self.name = name
-        self.items = []
         self.room = room
         self.game_over = False
-        self.game_map = game_map
-        self.current_coordinates = (1, 1)
+        self.current_coordinates = (2, 1)
 
     def move_rooms(self, direction):
         """
