@@ -21,10 +21,11 @@ def start_game():
     backpack = BackPack([])
     josh = Josh()
     mary = Mary()
+    mark = Mark()
     olivia = Olivia()
     katie = Katie()
     kento = Kento()
-    return player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia, katie, kento
+    return player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, mark, olivia, katie, kento
 
 
 def create_player(starting_room):
@@ -85,6 +86,8 @@ def talk_command(player, backpack, npcs):
         npc_name = "mary"
     if (npc_name == "woman") and isinstance(player.room, ElectronicsStore):
         npc_name = "olivia"
+    if (npc_name == "man") or npc_name == "employee" or npc_name.endswith("vendor") and isinstance(player.room, ElectronicsStore):
+        npc_name = "kento"
     selected_npc = next((npc for npc in npcs if npc.name.lower() == npc_name), None)
 
     if selected_npc:
@@ -138,7 +141,7 @@ def help_command():
 
 
 def main():
-    player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia, katie, kento = start_game()
+    player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia, mark, katie, kento = start_game()
     turn_counter = 100
     show_introduction()
 
@@ -156,7 +159,7 @@ def main():
                 check_command(player, backpack)
                 turn_counter -= 1
             elif choice_input.startswith('talk'):
-                talk_command(player, backpack, [josh, mary, olivia])
+                talk_command(player, backpack, [josh, mary, olivia, katie, mark, kento])
                 turn_counter -= 1
             elif choice_input.startswith('look'):
                 look_command(player)

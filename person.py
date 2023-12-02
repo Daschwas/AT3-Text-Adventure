@@ -40,7 +40,7 @@ class Josh(Person):
             if BlankCard in [type(item) for item in self.items]:
                 blank_card = next(item for item in self.items if isinstance(item, BlankCard))
                 self.items.remove(blank_card)
-                backpack.add(blank_card)
+                backpack.add(blank_card.name)
                 print(f"{self.name}:  You want my employee card...? You know what, sure, I was looking for an excuse to quit "
                       "anyway.")
                 print(f"{self.name}: That's part of the reason why I never wrote my name on this thing.")
@@ -57,12 +57,15 @@ class Mary(Person):
 
     def greet(self, player, backpack):
         print(f"{self.name}: Hello there! I'm {self.name}, and I work at the Clothing Boutique.")
-        print(f"{self.name}: Would you like to have a look at our selection?")
-        choice = input("Do you want to see the selection? (Yes/No): ").lower().strip()
-        if choice == "yes":
-            self.offer_items(player, backpack)
+        if Scarf or Watch in [type(item) for item in self.items]:
+            print(f"{self.name}: Would you like to have a look at our selection?")
+            choice = input("Do you want to see the selection? (Yes/No): ").lower().strip()
+            if choice == "yes":
+                self.offer_items(player, backpack)
+            else:
+                print(f"{self.name}: No worries - see you around!")
         else:
-            print(f"{self.name}: No worries - see you around!")
+            print("We're plum out of items today, sorry!")
         print("You return to the entrance of the boutique.")
 
 
@@ -81,7 +84,7 @@ class Mary(Person):
                 print(f"You already have a {item.name}! You don't need another one.")
             else:
                 self.items.remove(item)
-                backpack.add(item)
+                backpack.add(item.name)
                 print(f"{self.name} sells you a {item.name}. Enjoy your purchase!")
         else:
             print(f"{self.name}: I'm sorry, but we don't sell {item.name} right now.")
@@ -94,8 +97,9 @@ class Olivia(Person):
         self.items.append(None)
 
     def greet(self, player, backpack):
+        has_scarf = backpack.in_backpack("Warm Scarf") != -1
         print(f"{self.name}: I'm waiting for a friend. She should be here any minute...")
-        if backpack.in_backpack("scarf"):
+        if has_scarf:
             self.give_scarf(backpack)
         print("You return to the entrance of the electronics store.")
 
@@ -126,10 +130,10 @@ class Mark(Person):
         self.items.append(MembershipCard("Membership Card"))
 
     def greet(self, player, backpack):
-        has_id = backpack.in_backpack("fake card")
-        has_card = backpack.in_backpack("membership card")
+        has_membership = backpack.in_backpack("Membership Card") != -1
+        has_id = backpack.in_backpack("Fake ID Card") != -1
 
-        if has_id or has_card:
+        if has_id or has_membership:
             print(f"{self.name}: Always good to see one of our loyal clients.")
         else:
             print(f"{self.name}: Members only through here, mate. Or are you looking to purchase a membership?")
@@ -140,30 +144,37 @@ class Mark(Person):
                 print(f"{self.name}: Alright, then scram.")
         print("You return to the entrance of the bank.")
 
-    def block_exit(self, backpack):
+    def block_exit(self, player, backpack):
         print("You are prevented from moving ")
         membership_card = MembershipCard("Membership Card")
         fake_card = FakeCard("Fake ID Card")
+        has_membership = backpack.in_backpack("Membership Card") != -1
+        has_id = backpack.in_backpack("Fake ID Card") != -1
 
-        if backpack.in_backpack(fake_card):
+        if has_id:
             print(f"{self.name}: Oh, you are a member after all? You must be longtime client - I don't recognise"
                   f"that design!")
             print(f"{self.name}: Well, come on through.")
             return False
-        elif backpack.in_backpack(membership_card):
+        elif has_membership:
             print(f"{self.name}: Ah, one of ")
             return False
         else:
             print(f"{self.name}: Sorry, mate - members only through here, I'm afraid.")
             print(f"{self.name}: I can sell you a pass, though. What do you say?")
+            choice = input("Do you want to buy a membership card? (Yes/No): ").lower().strip()
+            if choice == "yes":
+                self.sell_membership_card(player, backpack)
             return True
 
-    def sell_membership_card(self, backpack):
+    def sell_membership_card(self, player, backpack):
         membership_card = MembershipCard("Membership Card")
-        if MembershipCard or FakeCard in [type(item) for item in backpack.items]:
+        has_membership = backpack.in_backpack("Membership Card") != -1
+        has_id = backpack.in_backpack("Fake ID Card") != -1
+        if has_id or has_membership:
             print(f"{self.name}: You can't become a member twice, mate.")
         else:
-            backpack.add(membership_card)
+            backpack.add(membership_card.name)
             print(f"{self.name}: Here you go, one Membership card.")
 
 class Katie(Person):
@@ -172,8 +183,8 @@ class Katie(Person):
         self.items.append(Pen("Bank Pen"))
         self.items.append(Paperwork("Bank Paperwork"))
     def greet(self, player, backpack):
-        has_paperwork = backpack.in_backpack("paperwork")
-        has_pen = backpack.in_backpack("pen")
+        has_paperwork = backpack.in_backpack("Bank Paperwork") != -1
+        has_pen = backpack.in_backpack("Bank Pen") != -1
 
         if has_paperwork or has_pen:
                 print(f"{self.name}: Hello again. Are you here as a genuine client or just to stock up on more stationery?")
@@ -194,27 +205,29 @@ class Katie(Person):
         print("You return to the entrance of the bank.")
 
     def sell_interest_free_loan(self, player, backpack):
-        loan_document= LoanDocument("Loan Document")
-        if backpack.in_backpack(loan_document):
+        loan_document = LoanDocument("Loan Document")
+        if backpack.in_backpack("Loan Document") != -1:
             print(f"{self.name}: I love the enthusiasm, but we need to be sure you can pay it back, sorry.")
         else:
-            backpack.add(loan_document)
+            backpack.add(loan_document.name)
             print(f"{self.name}: Here you go, one interest free loan.")
             print(f"{self.name}:Oh? No, it's not free of interest - it comes with a 'free' loan!")
             print(f"{self.name}:That's 80% weekly interest you will need to pay back. Enjoy!")
 
     def get_command(self, player, backpack):
+        bank_pen = Pen("Bank Pen")
+        paperwork = Paperwork("Bank Paperwork")
         choice = input("What would you like to take?").lower().strip()
         if choice == "paperwork":
             print("You stuff the paperwork into your backpack and quickly walk away from the table.")
             print(f"{self.name}: Hey! Wait! I need you to sign that here!")
             print(f"{self.name} shoots you a dirty look as you return to the entrance of the bank")
-            backpack.add(Paperwork("Bank Paperwork"))
+            backpack.add(paperwork.name)
         elif choice == "pen":
             print("You stuff the pen into your backpack and quickly walk away from the table.")
             print(f"{self.name}: Hey! Wait! I need you to sign that here!")
             print(f"{self.name} shoots you a dirty look as you return to the entrance of the bank")
-            backpack.add(Pen("Bank Pen"))
+            backpack.add(bank_pen.name)
         else:
             print("There's nothing to take of that description.")
 
@@ -236,8 +249,8 @@ class Kento(Person):
 
     def sell_item(self, player, backpack):
         camera = Camera("Camera")
-        if backpack.in_backpack(camera):
+        if backpack.in_backpack("Camera") != -1:
             print(f"{self.name}: Wait, haven't you bought one already? One per customer, I'm afraid!")
         else:
-            backpack.add(camera)
+            backpack.add(camera.name)
             print(f"{self.name}: Here you go, one Canon. Enjoy!")

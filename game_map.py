@@ -5,8 +5,8 @@ class GameMap:
     def __init__(self):
         self.rooms = {}
         self.tilemap = [
-            ["0", "0",],
-            ["0", "O",],
+            ["0", "0"],
+            ["0", "O"],
             ["-", "O"],
         ]
         self.create_rooms()
@@ -31,7 +31,10 @@ class GameMap:
     def display_map(self):
         for i, line in enumerate(self.tilemap):
             if i == self.player_coordinates[0]:
-                line[self.player_coordinates[1]] = "Y"
+                if 0 <= self.player_coordinates[1] < len(line):
+                    line[self.player_coordinates[1]] = "Y"
+                else:
+                    print("Invalid player coordinates.")
             print(line)
 
     def set_player_coordinates(self, player):
