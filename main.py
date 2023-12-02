@@ -1,13 +1,13 @@
-from player import *
 from commands import *
+from player import Player
 
 
 def start_game():
     """
-        Initialize the game by creating instances of rooms, defining their exits, and creating the player character.
+        Initialize the game by creating instances of rooms and NPCs, and creating the player character.
 
         Returns:
-            Player: The player character for the game.
+            tuple: A tuple containing instances of player, rooms, backpack, and NPCs for the game.
     """
     food_court = FoodCourt()
     lobby = Lobby()
@@ -22,10 +22,16 @@ def start_game():
     olivia = Olivia()
     katie = Katie()
     kento = Kento()
-    return player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, mark, olivia, katie, kento,
+    return player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, mark, olivia, \
+        katie, kento,
 
 
 def create_player(starting_room):
+    """
+    Creates a player character by allowing the user to input the player.name field and initializing a Player instance.
+    :param starting_room: The room where the player starts their adventure.
+    :return: new_player: The player character for the game.
+    """
     player_name = input("Enter your name: ")
     print(f"{starting_room.name}")
     new_player = Player(player_name, starting_room)
@@ -33,22 +39,22 @@ def create_player(starting_room):
     print(f"{new_player.room.description}")
     return new_player
 
-def end_game(self):
-    """
-    End the game by setting the game_over flag.
-    """
-    self.game_over = True
-
 
 def main():
+    """
+    This is the main loop of the game ("Code Black (Friday)").
+
+    It initializes the game and handles the player input. It also allows the user to replay the game once finished.
+    """
     while True:
-        player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia, mark, katie, kento = start_game()
+        player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia, mark, \
+            katie, kento = start_game()
         turn_counter = 0
-        commands.show_introduction()
+        show_introduction()
 
         while not player.game_over and turn_counter <= 60:
             print(f"You are currently in the {player.room.name}")
-            print("What would you like to do?")
+            print(f"What would you like to do?\n")
             choice_input = input("Please choose:").lower().strip()
 
             if choice_input.startswith('move'):
@@ -67,7 +73,7 @@ def main():
                 get_command(player, backpack)
                 turn_counter += 1
             elif choice_input.startswith('use'):
-                commands.use_item(player, backpack, turn_counter)
+                use_item(player, backpack, turn_counter)
                 turn_counter += 1
             elif choice_input.startswith('help'):
                 help_command()
@@ -84,13 +90,12 @@ def main():
             print("The only sound is the echo of your footsteps, hauntingly loud in the empty space.")
             print("It dawns on you that you're trapped, alone, until someone comes to free you on Monday.")
             print("The solitude stretches ahead, and the abandoned shops seem to watch silently.")
-            print("Looks like you're in for a long, uneasy weekend...")
+            print("Looks like you're in for a long, uneasy weekend...\n")
             print("Game over!")
 
-        play_again = input("Do you want to play again? (yes/no): ").lower()
+        play_again = input("Do you want to play again? (yes/no): \n").lower()
         if play_again != 'yes':
             break
-
 
 
 if __name__ == "__main__":
