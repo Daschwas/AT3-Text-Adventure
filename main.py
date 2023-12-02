@@ -22,7 +22,9 @@ def start_game():
     josh = Josh()
     mary = Mary()
     olivia = Olivia()
-    return player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia
+    katie = Katie()
+    kento = Kento()
+    return player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia, katie, kento
 
 
 def create_player(starting_room):
@@ -136,7 +138,7 @@ def help_command():
 
 
 def main():
-    player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia = start_game()
+    player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia, katie, kento = start_game()
     turn_counter = 100
     show_introduction()
 

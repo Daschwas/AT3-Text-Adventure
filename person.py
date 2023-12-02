@@ -93,8 +93,10 @@ class Olivia(Person):
                                    "waiting for someone.")
         self.items.append(None)
 
-    def greet(self):
+    def greet(self, player, backpack):
         print(f"{self.name}: I'm waiting for a friend. She should be here any minute...")
+        if backpack.in_backpack("scarf"):
+            self.give_scarf(backpack)
         print("You return to the entrance of the electronics store.")
 
     def block_exit(self, backpack):
@@ -109,10 +111,14 @@ class Olivia(Person):
 
     def give_scarf(self, backpack):
         scarf = Scarf("Warm Scarf")
-        self.items[0] = scarf
-        backpack.remove(scarf)
-        print(f"{self.name}: Thanks for the scarf! It's really warm.")
-
+        print(f"{self.name}: Oh, that's the scarf I wanted!")
+        choice = input("Will you give her the scarf? (Yes/No):").lower().strip()
+        if choice == "yes":
+            backpack.remove(scarf)
+            print(f"{self.name}: Thanks for the scarf! It's really warm.")
+        else:
+            print(f"{self.name}: No, of course - I understand...")
+            print(f"{self.name}: I hope my friend arrives soon so I can go get one for myself.")
 
 class Mark(Person):
     def __init__(self):
@@ -137,14 +143,14 @@ class Mark(Person):
     def block_exit(self, backpack):
         print("You are prevented from moving ")
         membership_card = MembershipCard("Membership Card")
-        blank_card = BlankCard("Blank ID Card")
+        fake_card = FakeCard("Fake ID Card")
 
-        if blank_card in backpack.items:
+        if backpack.in_backpack(fake_card):
             print(f"{self.name}: Oh, you are a member after all? You must be longtime client - I don't recognise"
                   f"that design!")
             print(f"{self.name}: Well, come on through.")
             return False
-        elif membership_card in backpack.items:
+        elif backpack.in_backpack(membership_card):
             print(f"{self.name}: Ah, one of ")
             return False
         else:
@@ -188,7 +194,14 @@ class Katie(Person):
         print("You return to the entrance of the bank.")
 
     def sell_interest_free_loan(self, player, backpack):
-        pass
+        loan_document= LoanDocument("Loan Document")
+        if backpack.in_backpack(loan_document):
+            print(f"{self.name}: I love the enthusiasm, but we need to be sure you can pay it back, sorry.")
+        else:
+            backpack.add(loan_document)
+            print(f"{self.name}: Here you go, one interest free loan.")
+            print(f"{self.name}:Oh? No, it's not free of interest - it comes with a 'free' loan!")
+            print(f"{self.name}:That's 80% weekly interest you will need to pay back. Enjoy!")
 
     def get_command(self, player, backpack):
         choice = input("What would you like to take?").lower().strip()
@@ -216,4 +229,15 @@ class Kento(Person):
             print(f"{self.name}: Oh, that's a nice scarf you've got there! I heard a customer here talking about that"
                   f"very design - must be chilly outside since it's so popular!")
         print(f"{self.name}: We actually have a great deal on at the moment - our Canon EOS R5 model camera is 80% off!")
+        choice = input("Would you like to buy? Yes/No:  ").lower().strip()
+        if choice == "yes":
+            self.sell_item(player, backpack)
         print("You return to the entrance to the food court.")
+
+    def sell_item(self, player, backpack):
+        camera = Camera("Camera")
+        if backpack.in_backpack(camera):
+            print(f"{self.name}: Wait, haven't you bought one already? One per customer, I'm afraid!")
+        else:
+            backpack.add(camera)
+            print(f"{self.name}: Here you go, one Canon. Enjoy!")
