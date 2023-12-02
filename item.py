@@ -73,3 +73,16 @@ class Pen(Item):
 class Paperwork(Item):
     def __init__(self, name):
         super().__init__(name, description="A set of paperwork. It appears to be official bank documents.")
+
+
+class LoanDocument(Item):
+    def __init__(self, name):
+        super().__init__(name, description="A document outlining the terms of an interest-free loan. "
+                                           "Read carefully; the fine print states it comes with a 'free' interest.")
+
+
+class Camera(Item):
+    def __init__(self, name):
+        super().__init__(name, description="A sleek and modern camera with advanced features at a great price. It "
+                                           "promises to capture memories in vivid detail. This be a valuable addition to"
+                                           " your collection.")
