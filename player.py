@@ -29,6 +29,7 @@ class Player:
         self.is_member = False
         self.given_scarf = False
 
+
     def move_rooms(self, direction, backpack, turn_counter):
         """
         Move the player to a new room based on the specified direction.

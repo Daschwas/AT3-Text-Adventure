@@ -3,7 +3,7 @@ class BackPack:
     BackPack Class
     """
 
-    def __init__(self, items):
+    def __init__(self, items, money):
         self._backpack = []
         if items is None:
             items = []
@@ -12,9 +12,18 @@ class BackPack:
         for item in items:
             self._backpack.append(item)
         self.sort()
+        money = 0
 
     def sort(self):
         self._backpack.sort()
+
+    def add_money(self, amount):
+        self.money += amount
+        print(f"You now have ${self.money}")
+
+    def remove_money(self, amount):
+        self.money -= amount
+        print(f"You now have ${self.money}")
 
     def count(self):
         return self._backpack.count()

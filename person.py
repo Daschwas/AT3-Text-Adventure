@@ -226,7 +226,7 @@ class Katie(Person):
 
     def sell_interest_free_loan(self, player, backpack):
         loan_document = LoanDocument("Loan Document")
-        fraud_document = LoanDocument("Loan Document")
+        fraud_document = LoanDocument("Loan Document with Fake Name")
         fraud_document.fraudulent = True
 
         if backpack.in_backpack("Loan Document") != -1:
@@ -235,12 +235,19 @@ class Katie(Person):
             print(f"{self.name}: I'll just get you to write your name here, if that's okay!")
             signed_name = input("Please write your name:")
             if signed_name == player.name:
-                backpack.add(fraud_document.name)
-            else:
+                print(f"You quickly write {signed_name} at the bottom of the document.")
                 backpack.add(loan_document.name)
+            else:
+                print(f"You scribble {signed_name} at the bottom of the document instead of your real name.")
+                backpack.add(fraud_document.name)
             print(f"{self.name}: Here you go, one interest free loan.")
             print(f"{self.name}:Oh? No, it's not free of interest - it comes with a 'free' loan!")
             print(f"{self.name}:That's 80% weekly interest you will need to pay back. Enjoy!")
+            if signed_name == player.name:
+                print("Welp.")
+            else:
+                print("Well, it's a good thing you used a fake name then...")
+
 
     def get_command(self, player, backpack):
         bank_pen = Pen("Bank Pen")

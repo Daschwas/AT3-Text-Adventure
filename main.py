@@ -18,7 +18,7 @@ def start_game():
     clothing_boutique = ClothingBoutique()
     electronics_store = ElectronicsStore()
     player = create_player(food_court)
-    backpack = BackPack([])
+    backpack = BackPack([], 40)
     josh = Josh()
     mary = Mary()
     mark = Mark()
@@ -213,8 +213,6 @@ def main():
             print("Looks like you're in for a long, uneasy weekend...")
             print("Game over!")
 
-        if player.game_over:
-            print("As the clock strikes 5:00 PM, an unsettling quiet descends upon the now-deserted shops.")
         play_again = input("Do you want to play again? (yes/no): ").lower()
         if play_again != 'yes':
             break
