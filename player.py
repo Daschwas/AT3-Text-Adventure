@@ -1,4 +1,5 @@
 from game_map import GameMap
+from room import *
 
 class Player:
     """
@@ -24,6 +25,8 @@ class Player:
             'east': (0, 1),
             'west': (0, -1),
         }
+        self.is_member = False
+        self.given_scarf = False
 
     def move_rooms(self, direction):
         """
@@ -33,7 +36,7 @@ class Player:
         Parameters:
             Direction -  The direction in which the player wants to move.
         """
-
+        blocked = False
         current_row, current_col = self.current_coordinates
         direction_change = self.direction_map.get(direction)
 
@@ -43,14 +46,23 @@ class Player:
             new_room = self.game_map.get_room_at(*new_coordinates)
 
             if new_room:
-                self.current_coordinates = new_coordinates
-                self.room = new_room
-                self.game_map.set_player_coordinates(self)
-                self.game_map.update_tilemap(current_row, current_col)
-                print(f"You moved {direction}.")
-                print(f"You have arrived in the {new_room.name}.")
-                print(f"These are your previous values {current_row, current_col}")
-                print(f"These are your current values{self.current_coordinates}")
+                if isinstance(self.room, Bank) and isinstance(new_room, ElectronicsStore):
+                    blocked = True
+                elif isinstance(self.room, FoodCourt) and isinstance(new_room, Lobby):
+                    blocked = True
+                elif isinstance(self.room, ElectronicsStore) and isinstance(new_room, Lobby):
+                    blocked = True
+                if not blocked:
+                    self.current_coordinates = new_coordinates
+                    self.room = new_room
+                    self.game_map.set_player_coordinates(self)
+                    self.game_map.update_tilemap(current_row, current_col)
+                    print(f"You moved {direction}.")
+                    print(f"You have arrived in the {new_room.name}.")
+                    print(f"These are your previous values {current_row, current_col}")
+                    print(f"These are your current values{self.current_coordinates}")
+                else:
+                    print("It looks like you can't proceed through here at the moment.")
             else:
                 print("Invalid direction. Try again.")
         else:

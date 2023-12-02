@@ -105,28 +105,39 @@ class Olivia(Person):
         self.items.append(None)
 
     def greet(self, player, backpack):
-        has_scarf = backpack.in_backpack("Warm Scarf") != -1
+        has_scarf = backpack.in_backpack("Warm Scarf") != -1 or backpack.in_backpack("Dusty Scarf") != -1
         print(f"{self.name}: I'm waiting for a friend. She should be here any minute...")
         if has_scarf:
-            self.give_scarf(backpack)
+            self.give_scarf(player, backpack)
         print("You return to the entrance of the electronics store.")
 
-    def block_exit(self, backpack):
+    def block_exit(self, player, backpack):
         scarf = Scarf("Warm Scarf")
+        dusty_scarf = Scarf("Dusty Scarf")
         if scarf in backpack.items:
             print(f"{self.name}: Oh! Oh! Thank you so much - how did you know I was looking for this?")
-            return False
+            backpack.remove("Warm Scarf")
+            player.given_scarf = True
+        elif dusty_scarf in backpack.items:
+            print(f"{self.name}: Oh! Oh! Thank you! It's...not quite what I imagined.")
+            backpack.remove("Dusty Scarf")
+            player.given_scarf = True
         else:
             print(f"{self.name}: How long is she going to take? I really hope they don't sell "
                   f"out of the scarf I want before I get there...")
-            return True
 
-    def give_scarf(self, backpack):
+    def give_scarf(self, player, backpack):
         print(f"{self.name}: Oh, that's the scarf I wanted!")
         choice = input("Will you give her the scarf? (Yes/No):").lower().strip()
         if choice == "yes":
-            backpack.remove("Warm Scarf")
-            print(f"{self.name}: Thanks for the scarf! It's really warm.")
+            if backpack.in_backpack("Warm Scarf") != -1:
+                backpack.remove("Warm Scarf")
+                print(f"{self.name}: Thanks for the scarf! It's really warm.")
+                player.given_scarf = True
+            else:
+                backpack.remove("Dusty Scarf")
+                print(f"{self.name}: It looked much better in the advertisement. Still...thank you.")
+                player.given_scarf = True
         else:
             print(f"{self.name}: No, of course - I understand...")
             print(f"{self.name}: I hope my friend arrives soon so I can go get one for myself.")
@@ -157,22 +168,24 @@ class Mark(Person):
         fake_card = FakeCard("Fake ID Card")
         has_membership = backpack.in_backpack("Membership Card") != -1
         has_id = backpack.in_backpack("Fake ID Card") != -1
-
-        if has_id:
-            print(f"{self.name}: Oh, you are a member after all? You must be longtime client - I don't recognise"
-                  f"that design!")
-            print(f"{self.name}: Well, come on through.")
-            return False
-        elif has_membership:
-            print(f"{self.name}: Ah, one of ")
-            return False
+        if not player.is_member:
+            if has_id:
+                print(f"{self.name}: Oh, you are a member after all? You must be longtime client - I don't recognise"
+                      f"that design!")
+                print(f"{self.name}: Well, come on through.")
+                player.is_member = True
+            elif has_membership:
+                print(f"{self.name}: Ah, one of our regulars - please come through.")
+                player.is_member = True
+            else:
+                print(f"{self.name}: Sorry, mate - members only through here, I'm afraid.")
+                print(f"{self.name}: I can sell you a pass, though. What do you say?")
+                choice = input("Do you want to buy a membership card? (Yes/No): ").lower().strip()
+                if choice == "yes":
+                    self.sell_membership_card(player, backpack)
+                return False
         else:
-            print(f"{self.name}: Sorry, mate - members only through here, I'm afraid.")
-            print(f"{self.name}: I can sell you a pass, though. What do you say?")
-            choice = input("Do you want to buy a membership card? (Yes/No): ").lower().strip()
-            if choice == "yes":
-                self.sell_membership_card(player, backpack)
-            return True
+            print(f"{self.name}: Ah, back again? Please, come through sir.")
 
     def sell_membership_card(self, player, backpack):
         membership_card = MembershipCard("Membership Card")

@@ -204,7 +204,9 @@ def main():
             else:
                 print("That is not a valid option")
         elif turn_counter == 60:
+            print("It is 5.00 pm. The shops have now shut.")
+            print("You try to open the exit but all the doors are locked.")
+            print("You'll need to stay here until someone comes to free you on Monday.")
+            print("Looks like you're in for a long weekend...")
             print("Game over!")
-
-
 main()
