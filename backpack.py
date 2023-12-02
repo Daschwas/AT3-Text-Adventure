@@ -54,16 +54,17 @@ class BackPack:
         :param item:
         :return: -1 | False | integer
         """
+        item_lower = item.lower()
         low = 0
         high = len(self._backpack) - 1
         while low <= high:
             mid = (high + low) // 2
-            that_item = self._backpack[mid]
-            if that_item == item:
+            that_item = self._backpack[mid].lower()
+            if that_item == item_lower:
                 return mid
-            elif that_item < item:
+            elif that_item < item_lower:
                 low = mid + 1
-            elif that_item > item:
+            elif that_item > item_lower:
                 high = mid - 1
         return -1
 

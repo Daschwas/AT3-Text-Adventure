@@ -1,10 +1,11 @@
 from backpack import *
 
-class Item:
 
+class Item:
     """
     This class represents the items that can be held by the player and characters.
     """
+
     def __init__(self, name, description):
         """
         Parameters:
@@ -15,6 +16,7 @@ class Item:
         self.name = name
         self.description = description
         self.can_get = False
+
     def get_item(self, backpack):
         if self.can_get == True:
             backpack.add(self.name)
@@ -25,6 +27,10 @@ class Item:
     def check_item(self):
         print(f"You examine the {self.name}")
         print(f"{self.description}")
+
+    def use_item(self, backpack):
+        print(self.use)
+
 
 class VendingMachine(Item):
     def __init__(self, name):
@@ -87,13 +93,12 @@ class VendingMachine(Item):
             print("You look around but find nothing noteworthy.")
 
 
-
 class BottledWater(Item):
     def __init__(self, name):
         super().__init__(name, description="A refreshing bottle of water!")
         self.can_get = True
 
-    def use_drink(self, backpack):
+    def use_item(self, backpack):
         print("You drink the bottle of water and feel refreshed!")
         backpack.remove(self)
 
@@ -103,35 +108,86 @@ class BlankCard(Item):
         super().__init__(name, description="A blank ID card that belongs to Josh. It's seen better days.")
         self.can_get = True
 
+    def use_item(self, backpack):
+        print("You're not sure what to use the Blank Card on. Maybe you could use something on it?")
+
+
 class FakeCard(Item):
     def __init__(self, name):
-        super().__init__(name, description="You've written your name on the card - it might pass for a Membership card.")
+        super().__init__(name,
+                         description="You've written your name on the card - it might pass for a Membership card.")
         self.can_get = True
+
+    def use_item(self, backpack):
+        print("You flash the fake membership card confidently, hoping it fools someone.?")
+
 
 class MembershipCard(Item):
     def __init__(self, name):
-        super().__init__(name, description="A membership card that grants access to exclusive benefits. It belongs to the tech club.")
+        super().__init__(name,
+                         description="A membership card that grants access to exclusive benefits. It belongs to the tech club.")
         self.can_get = True
+
+    def use_item(self, backpack):
+        print(
+            "You proudly display the membership card to those around you, bragging about gaining access to exclusive areas.")
+
 
 class Scarf(Item):
     def __init__(self, name):
         super().__init__(name, description="A cozy and stylish scarf.")
         self.can_get = True
 
+    def use_warm_item(self, backpack):
+        print(f"You wrap the scarf around yourself, feeling warm and stylish.")
+        print(f"Maybe a bit too warm. You take the scarf off.")
+
+    def use_dusty_item(self, backpack):
+        print(f"You wrap the scarf around yourself, and a cloud of dust emerges.")
+        print(f"You take the scarf off, coughing all the while.")
+
+
 class Watch(Item):
     def __init__(self, name):
         super().__init__(name, description="A stylish and trendy watch.")
         self.can_get = True
+
+    def use_item(self, backpack, turn_counter):
+        print(f"You check the time on your stylish watch. It's 4.{turn_counter} pm.")
+
 
 class Pen(Item):
     def __init__(self, name):
         super().__init__(name, description="A basic ballpoint pen. It writes smoothly and is perfect for quick notes.")
         self.can_get = True
 
+    def use_item(self, backpack):
+        print("You whip out the pen you stole from the bank teller.")
+        choice = input("What would you like to use the pen on? ").lower().strip()
+        if choice.startswith("blank") and backpack.in_backpack("Blank ID Card") != -1:
+            print("You write your name on the Blank ID Card.")
+            print("Could this maybe pass as a Membership Card?")
+            backpack.remove("Blank ID Card")
+            fake_card = FakeCard("Fake ID Card")
+            backpack.add(fake_card.name)
+        elif choice == "paperwork" and backpack.in_backpack("Bank Paperwork") != -1:
+            print("You make some quick notes on the paperwork.")
+        elif choice == "loan document" and backpack.in_backpack("Loan Document") != -1:
+            print("You scribble on the loan document. Is this really a good idea?")
+        elif (choice.endswith("bottle") or choice.endswith("water")) and backpack.in_backpack("Bottled Water") != -1:
+            print("You write your name on the water bottle. Is there anything else you could write your name on?")
+        else:
+            print("That's not a valid option.")
+
+
 class Paperwork(Item):
     def __init__(self, name):
         super().__init__(name, description="A set of paperwork. It appears to be official bank documents.")
         self.can_get = True
+
+    def use_item(self, backpack):
+        print("You browse through the paperwork, gaining some insights into the complex world of finance.")
+
 
 class LoanDocument(Item):
     def __init__(self, name):
@@ -141,14 +197,18 @@ class LoanDocument(Item):
         self.fraudulent = False
 
     def get_description(self):
-            print("A seemingly innocuous document, but the fine print reveals it comes with a hefty 80% weekly "
-                  "interest rate.")
-            if self.fraudulent:
-                print( "You, wisely, have signed it with a fake name.")
+        print("A seemingly innocuous document, but the fine print reveals it comes with a hefty 80% weekly "
+              "interest rate.")
+        if self.fraudulent:
+            print("You, wisely, have signed it with a fake name.")
 
     def check_item(self):
         print(f"You examine the {self.name}")
         print(self.get_description())
+
+    def use_item(self, backpack):
+        print("You carefully review the loan document, contemplating its terms and potential consequences.")
+
 
 class Camera(Item):
     def __init__(self, name):
@@ -156,3 +216,6 @@ class Camera(Item):
                                            "promises to capture memories in vivid detail. This be a valuable addition to"
                                            " your collection.")
         self.can_get = True
+
+    def use_item(self, backpack):
+        print("You take out the camera and capture a memorable moment. The advanced features ensure a stunning photo.")

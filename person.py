@@ -11,7 +11,7 @@ class Person:
         Parameters:
              Name - The name of the non player character.
              Items - A list that shows the current items held by the NPC.
-             Description -
+             Description - A description of the NPC.
              On_Shift - This is a state that shows whether the postman is currently working or not. It is switched off
              when the player runs out of 'turns' as the world then switches off.
         """
@@ -23,10 +23,16 @@ class Person:
 
 class Josh(Person):
     def __init__(self):
+        """
+        Represents the NPC Josh, a friendly guy who works at the food court.
+        """
         super().__init__("Josh", "A friendly guy who works at the food court. He's seen better days.")
         self.items.append(BlankCard("Blank ID Card"))
 
     def greet(self, player, backpack):
+        """
+        Greets the player and offers a Blank ID Card if requested.
+        """
         print(f"{self.name}:  Hey, I'm {self.name}. I'm off shift at the moment - can you bother me later?")
         choice = input("Is there anything else you would like to do?").lower().strip()
         if "ID" or "card" in choice:
@@ -36,6 +42,9 @@ class Josh(Person):
         print("You return to the entrance to the food court.")
 
     def give_blank_card(self, player, backpack):
+        """
+        Provides the user with the Blank ID Card for use in a sidequest.
+        """
         if BlankCard in [type(item) for item in self.items]:
             blank_card = next(item for item in self.items if isinstance(item, BlankCard))
             self.items.remove(blank_card)
@@ -51,11 +60,17 @@ class Josh(Person):
 
 class Mary(Person):
     def __init__(self):
+        """
+        Represents the NPC Mary, a salesperson at the Clothing Boutique.
+        """
         super().__init__("Mary", "A salesperson at the Clothing Boutique.")
         self.items.append(Scarf("Warm Scarf"))
         self.items.append(Watch("Stylish Watch"))
 
     def greet(self, player, backpack):
+        """
+        Greets the player and offers items for sale at the Clothing Boutique.
+        """
         print(f"{self.name}: Hello there! I'm {self.name}, and I work at the Clothing Boutique.")
         if Scarf or Watch in [type(item) for item in self.items]:
             print(f"{self.name}: Would you like to have a look at our selection?")
@@ -69,6 +84,9 @@ class Mary(Person):
         print("You return to the entrance of the boutique.")
 
     def offer_items(self, player, backpack):
+        """
+        Displays the list of items for sale by Katie, depending on what the user has already bought.
+        """
         has_scarf = backpack.in_backpack("Warm Scarf") != -1
         has_watch = backpack.in_backpack("Stylish Watch") != -1
         if len(self.items) < 1:
@@ -90,6 +108,9 @@ class Mary(Person):
                 print(f"{self.name}:Please pick one of our items.")
 
     def sell_item(self, player, choice, backpack):
+        """
+        Sells specific items to the user which are then added to the backpack.
+        """
         selected_item = None
         for item in self.items:
             if item.name == choice:
@@ -236,7 +257,7 @@ class Katie(Person):
         fraud_document = LoanDocument("Loan Document with Fake Name")
         fraud_document.fraudulent = True
 
-        if backpack.in_backpack("Loan Document") != -1:
+        if backpack.in_backpack("Loan Document") != -1 or backpack.in_backpack("Loan Document with Fake Name") != -1:
             print(f"{self.name}: I love the enthusiasm, but we need to be sure you can pay it back, sorry.")
         else:
             print(f"{self.name}: I'll just get you to write your name here, if that's okay!")
