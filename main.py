@@ -66,8 +66,8 @@ def move_command(player):
         else:
             print("Invalid choice. Try again.")
 
-
-look_directions = ['Up', 'Down', 'Left', 'Right']
+def talk_command():
+    print(f"You obtained !")
 
 def get_command(item):
     print(f"You obtained {item}!")
@@ -81,8 +81,14 @@ def talk_command(person):
     ##print(f"You left.")
 
 
-def look_command(direction):
-    print(f"You looked {direction}")
+def look_command(player):
+    player.room.look()
+
+def check_command(player):
+    print(f"What would you like to check?")
+    check_input = input("Please choose:").lower().strip()
+    if check_input.startswith('map'):
+        player.game_map.display_map()
 
 def end_game(self):
     """
@@ -96,7 +102,7 @@ def help_command():
     """
     print("Game Controls:")
     print("- 'Move': Move to a different room.")
-    print("- 'Talk': Interact with a person in the current room.")
+    print("- 'Check': Interact with a person in the current room.")
     print("- 'Look': Examine your surroundings.")
     print("- 'Leave': Leave the current room/conversation.")
     print("- 'Get': Pick up an item.")
@@ -119,11 +125,11 @@ def main():
             if choice_input.startswith('move'):
                 move_command(player)
                 turn_counter -= 1
-            elif choice_input.startswith('talk'):
-                talk_command()
+            elif choice_input.startswith('check'):
+                check_command(player)
                 turn_counter -= 1
             elif choice_input.startswith('look'):
-                look_command()
+                look_command(player)
                 turn_counter -= 1
             elif choice_input.startswith('leave'):
                 #leave_command()

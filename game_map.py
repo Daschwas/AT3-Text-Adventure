@@ -10,6 +10,7 @@ class GameMap:
             ["-", "O"],
         ]
         self.create_rooms()
+        self.player_coordinates = (2, 1)
 
     def create_rooms(self):
         food_court = FoodCourt()

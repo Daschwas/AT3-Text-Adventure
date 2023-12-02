@@ -68,3 +68,64 @@ class Mary(Person):
                 print(f"{self.name} sells you a {item.name}. Enjoy your purchase!")
         else:
             print(f"{self.name}: I'm sorry, but I don't have {item.name} in stock right now.")
+
+
+class Olivia(Person):
+    def __init__(self):
+        super().__init__("Olivia", "A person hanging by the exit to the electronics store - she seems to be impatiently"
+                                   "waiting for someone.")
+        self.items.append(None)
+
+    def greet(self):
+        print(f"{self.name}: I'm waiting for a friend. She should be here any minute...")
+
+    def block_exit(self, backpack):
+        scarf = Scarf("Warm Scarf")
+        if scarf in backpack.items:
+            print(f"{self.name}: Oh! Oh! Thank you so much - how did you know I was looking for this?")
+            return False
+        else:
+            print(f"{self.name}: How long is she going to take? I really hope they don't sell "
+                  f"out of the scarf I want before I get there...")
+            return True
+
+    def give_scarf(self, backpack):
+        scarf = Scarf("Warm Scarf")
+        self.items[0] = scarf
+        backpack.remove(scarf)
+        print(f"{self.name}: Thanks for the scarf! It's really warm.")
+
+
+class Mark(Person):
+    def __init__(self):
+        super().__init__("Mark", "A stern-looking security guard at the entrance to the secret store.")
+        #self.items.append(MembershipCard("Membership Card"))
+
+    def greet(self):
+        print(f"{self.name}: Members only through here, mate. Or are you looking to purchase a membership?")
+
+    def block_exit(self, backpack):
+        print("You are prevented from moving ")
+        #membership_card = MembershipCard("Membership Card")
+        blank_card = BlankCard("Blank ID Card")
+
+        if blank_card in backpack.items:
+            print(f"{self.name}: Oh, you are a member after all? You must be longtime client - I don't recognise"
+                  f"that design!")
+            print(f"{self.name}: Well, come on through.")
+            return False
+        #elif membership_card in backpack.items:
+            #print(f"{self.name}: Ah, one of ")
+            #return False
+        else:
+            print(f"{self.name}: Sorry, mate - members only through here, I'm afraid.")
+            print(f"{self.name}: I can sell you a pass, though. What do you say?")
+            return True
+
+    def sell_membership_card(self, backpack):
+        membership_card = MembershipCard("Membership Card")
+        if MembershipCard in [type(item) for item in backpack.items]:
+            print(f"{self.name}: You can't become a member twice, mate.")
+        else:
+            backpack.add(membership_card)
+            print(f"{self.name}: Here you go, one Membership card.")

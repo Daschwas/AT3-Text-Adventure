@@ -42,11 +42,12 @@ class Player:
 
         new_coordinates = (new_row, new_col)
         new_room = self.game_map.get_room_at(*new_coordinates)
-        self.game_map.update_tilemap(current_row, current_col)
 
         if new_room:
             self.current_coordinates = new_coordinates
             self.room = new_room
+            self.game_map.set_player_coordinates(self)
+            self.game_map.update_tilemap(current_row, current_col)
             print(f"You moved {direction}.")
             print(f"You have arrived in the {new_room.name}.")
         else:
