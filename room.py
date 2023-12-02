@@ -1,7 +1,9 @@
+from item import *
+
 class Room:
     """
     The intention of this class would be to act as a container for the NPCs and objects that are
-    located within the room as well as keep track of where the palyer is located.
+    located within the room as well as keep track of where the player is located.
     """
 
     def __init__(self, name, description, row, column):
@@ -20,8 +22,6 @@ class Room:
         self.column = column
         self.position = [self.row, self.column]
 
-        # self.exits = {}
-
         def get_coordinates(self):
             return self.row, self.column
 
@@ -30,6 +30,11 @@ class FoodCourt(Room):
     def __init__(self):
         super().__init__("Food Court", "A food court filled with vendors and stores. The air is alive with "
                                        "the sweet melodies of various food aromas. ", 2, 1)
+
+
+    def room_check(self, backpack):
+        vending_machine = VendingMachine("Vending Machine")
+        vending_machine.check(backpack)
 
     def look(self):
         print(f"You looked around the {self.name}")

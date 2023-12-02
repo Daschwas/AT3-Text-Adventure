@@ -76,18 +76,26 @@ class Mary(Person):
         choice = input("What would you like to buy?): ").lower().strip()
         self.sell_item(player, choice, backpack)
 
-    def sell_item(self, player, item, backpack):
-        if self.items <=1:
+    def sell_item(self, player, choice, backpack):
+        if len(self.items) <= 1:
             print(f"{self.name}: Sorry, I can't sell everything to you!")
-        elif item in self.items:
-            if backpack.in_backpack(item) != -1:
-                print(f"You already have a {item.name}! You don't need another one.")
-            else:
-                self.items.remove(item)
-                backpack.add(item.name)
-                print(f"{self.name} sells you a {item.name}. Enjoy your purchase!")
         else:
-            print(f"{self.name}: I'm sorry, but we don't sell {item.name} right now.")
+            selected_item = None
+            try:
+                choice_index = int(choice) - 1  # Convert the choice to an integer index
+                selected_item = self.items[choice_index]
+            except (ValueError, IndexError):
+                pass
+
+            if selected_item:
+                if backpack.in_backpack(selected_item) != -1:
+                    print(f"You already have a {selected_item.name}! You don't need another one.")
+                else:
+                    self.items.remove(selected_item)
+                    backpack.add(selected_item.name)
+                    print(f"{self.name} sells you a {selected_item.name}. Enjoy your purchase!")
+            else:
+                print(f"{self.name}: I'm sorry, but we don't sell that item right now.")
 
 
 class Olivia(Person):
@@ -114,11 +122,10 @@ class Olivia(Person):
             return True
 
     def give_scarf(self, backpack):
-        scarf = Scarf("Warm Scarf")
         print(f"{self.name}: Oh, that's the scarf I wanted!")
         choice = input("Will you give her the scarf? (Yes/No):").lower().strip()
         if choice == "yes":
-            backpack.remove(scarf)
+            backpack.remove("Warm Scarf")
             print(f"{self.name}: Thanks for the scarf! It's really warm.")
         else:
             print(f"{self.name}: No, of course - I understand...")
@@ -236,9 +243,9 @@ class Kento(Person):
         super().__init__("Kento", "The vendor at the Electronics Store.")
 
     def greet(self, player, backpack):
-        scarf = Scarf("Warm Scarf")
+        has_scarf = backpack.in_backpack("Warm Scarf") != -1
         print(f"{self.name}: Welcome to the Electronics Store! If you need the latest gadgets, you're in the right place.")
-        if backpack.in_backpack(scarf) != -1:
+        if has_scarf:
             print(f"{self.name}: Oh, that's a nice scarf you've got there! I heard a customer here talking about that"
                   f"very design - must be chilly outside since it's so popular!")
         print(f"{self.name}: We actually have a great deal on at the moment - our Canon EOS R5 model camera is 80% off!")
