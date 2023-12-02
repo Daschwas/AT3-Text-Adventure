@@ -43,7 +43,7 @@ class Player:
         direction_change = self.direction_map.get(direction)
 
         if direction_change:
-            if isinstance(self.room, Lobby) and direction("north"):
+            if isinstance(self.room, Lobby) and direction == "north":
                 commands.end_game(self, backpack)
             else:
                 new_row, new_col = current_row + direction_change[0], current_col + direction_change[1]

@@ -86,7 +86,7 @@ class Bank(Room):
                                  "comparison to the business of where you have been so far.", 2, 2)
 
     def block_event(self, player, backpack):
-        mark = Mark("Mark")
+        mark = Mark()
         mark.block_exit(player, backpack)
 
     def look(self):
@@ -104,7 +104,7 @@ class ElectronicsStore(Room):
         super().__init__("Electronics Store", "A store filled with the latest gadgets and electronics.", 1, 2)
 
     def block_event(self, player, backpack):
-        olivia = Olivia("Mark")
+        olivia = Olivia()
         olivia.block_exit(player, backpack)
 
     def look(self):

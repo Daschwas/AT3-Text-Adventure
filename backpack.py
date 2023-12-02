@@ -12,7 +12,7 @@ class BackPack:
         for item in items:
             self._backpack.append(item)
         self.sort()
-        money = 0
+        self.money = money
 
     def sort(self):
         self._backpack.sort()

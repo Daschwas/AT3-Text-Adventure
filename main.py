@@ -64,14 +64,12 @@ def move_command(player, backpack, turn_counter):
     """
     current_room = player.room
     print(f"You are in the {current_room.name}")
-    while True:
-        choice = input("Where would you like to move?").lower()
-        print(choice)
-        if choice in {'north', 'south', 'east', 'west'}:
-            player.move_rooms(choice, backpack, turn_counter)
-            break
-        else:
-            print("Invalid choice. Try again.")
+    choice = input("Where would you like to move?").lower()
+    print(choice)
+    if choice in {'north', 'south', 'east', 'west'}:
+        player.move_rooms(choice, backpack, turn_counter)
+    else:
+        print("Invalid choice. Try again.")
 
 
 def talk_command(player, backpack, npcs):
@@ -141,6 +139,8 @@ def check_command(player, backpack, turn_counter):
             print(f"It is 4.{turn_counter} pm")
     elif check_input.startswith("vending") and isinstance(player.room, FoodCourt):
         player.room.room_check(backpack)
+    elif check_input == "wallet" or "money":
+        print(f"You have ${backpack.money}.")
     else:
         print(f"You check {check_input} but it does not exist. Passerby's look at you oddly.")
 
