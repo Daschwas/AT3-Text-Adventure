@@ -26,7 +26,7 @@ class Josh(Person):
             super().__init__("Josh", "A friendly guy who works at the food court. He's seen better days.")
             self.items.append(BlankCard("Blank ID Card"))
 
-        def greet(self):
+        def greet(self, player, backpack):
             print(f"{self.name}:  Hey, I'm {self.name}. I'm off shift at the moment - can you bother me later?")
 
         def give_blank_card(self, backpack):

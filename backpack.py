@@ -1,17 +1,6 @@
 class BackPack:
     """
     BackPack Class
-
-
-
-    ToDo: [X] Instantiate backpack
-    ToDo: [X] Add Item
-    ToDo: [ ] Remove Item
-    ToDo: [ ] List Items
-    ToDo: [X] Count items
-    ToDo: [ ] in backpack (Search for Item - Student to do)
-    ToDo: [X] Sort Items
-
     """
 
     def __init__(self, items):
@@ -31,7 +20,12 @@ class BackPack:
         return self._backpack.count()
 
     def list(self):
-        pass
+        if not self._backpack:
+            print("Your backpack is empty.")
+        else:
+            print("You are currently holding:\n")
+            for item in self._backpack:
+                print(item)
 
     def add(self, item):
         if item is not None:

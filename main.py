@@ -2,6 +2,7 @@ from room import *
 from player import *
 from backpack import *
 from item import *
+from person import *
 
 
 def start_game():
@@ -18,7 +19,10 @@ def start_game():
     electronics_store = ElectronicsStore()
     player = create_player(food_court)
     backpack = BackPack([])
-    return player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack
+    josh = Josh()
+    mary = Mary()
+    olivia = Olivia()
+    return player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia
 
 
 def create_player(starting_room):
@@ -66,15 +70,31 @@ def move_command(player):
         else:
             print("Invalid choice. Try again.")
 
-def talk_command():
-    print(f"You obtained !")
+def talk_command(player, backpack, npcs):
+    npc_name = input("Who would you like to talk to?").lower().strip()
+    if (npc_name == "man" or npc_name == "employee") and isinstance(player.room, FoodCourt):
+        npc_name = "josh"
+    if (npc_name == "man" or npc_name == "guard") and isinstance(player.room, Bank):
+        npc_name = "mark"
+    if (npc_name == "woman" or npc_name == "employee" or npc_name.startswith("bank")) and isinstance(player.room, Bank):
+        npc_name = "katie"
+    if (npc_name == "woman" or npc_name == "employee" or npc_name.endswith("vendor")) and isinstance(player.room,
+                                                                                                     ClothingBoutique):
+        npc_name = "mary"
+    if (npc_name == "woman") and isinstance(player.room, ElectronicsStore):
+        npc_name = "olivia"
+    selected_npc = next((npc for npc in npcs if npc.name.lower() == npc_name), None)
+
+    if selected_npc:
+        selected_npc.greet(player, backpack)
+    else:
+        print(f"There's no one around matching the description of {npc_name}.")
+
 
 def get_command(item):
     print(f"You obtained {item}!")
 
 
-def talk_command(person):
-    print(f"You began talking to {person}")
 
 
 ##def leave_command:
@@ -84,11 +104,15 @@ def talk_command(person):
 def look_command(player):
     player.room.look()
 
-def check_command(player):
+def check_command(player, backpack):
     print(f"What would you like to check?")
+    print(f"Type 'map' to check the map and 'backpack' to check your backpack.")
+    print(f"Otherwise type an object if you wish to check that out.")
     check_input = input("Please choose:").lower().strip()
     if check_input.startswith('map'):
         player.game_map.display_map()
+    elif check_input.startswith('backpack'):
+        backpack.list()
 
 def end_game(self):
     """
@@ -102,7 +126,8 @@ def help_command():
     """
     print("Game Controls:")
     print("- 'Move': Move to a different room.")
-    print("- 'Check': Interact with a person in the current room.")
+    print("- 'Talk': Interact with a person in the current room.")
+    print("- 'Check': Interact with an object in the current room.")
     print("- 'Look': Examine your surroundings.")
     print("- 'Leave': Leave the current room/conversation.")
     print("- 'Get': Pick up an item.")
@@ -111,7 +136,7 @@ def help_command():
 
 
 def main():
-    player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack= start_game()
+    player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia = start_game()
     turn_counter = 100
     show_introduction()
 
@@ -126,7 +151,10 @@ def main():
                 move_command(player)
                 turn_counter -= 1
             elif choice_input.startswith('check'):
-                check_command(player)
+                check_command(player, backpack)
+                turn_counter -= 1
+            elif choice_input.startswith('talk'):
+                talk_command(player, backpack, [josh, mary, olivia])
                 turn_counter -= 1
             elif choice_input.startswith('look'):
                 look_command(player)
