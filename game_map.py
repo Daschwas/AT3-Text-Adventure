@@ -34,6 +34,7 @@ class GameMap:
         current_row, current_col = self.player_coordinates
         display_tilemap = [line.copy() for line in self.tilemap]
         display_tilemap[current_row][current_col] = "Y"
+        print("Key: X: Where you've been; Y: Where you are; O: Yet to visit.")
         for line in display_tilemap:
             print(line)
 

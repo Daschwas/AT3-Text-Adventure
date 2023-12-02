@@ -1,5 +1,7 @@
+import commands
 from game_map import GameMap
 from room import *
+from commands import *
 
 class Player:
     """
@@ -28,7 +30,7 @@ class Player:
         self.is_member = False
         self.given_scarf = False
 
-    def move_rooms(self, direction):
+    def move_rooms(self, direction, backpack):
         """
         Move the player to a new room based on the specified direction.
         Also updates the players internal coordinates and calls a gamemap function to update the tilemap.
@@ -41,29 +43,32 @@ class Player:
         direction_change = self.direction_map.get(direction)
 
         if direction_change:
-            new_row, new_col = current_row + direction_change[0], current_col + direction_change[1]
-            new_coordinates = (new_row, new_col)
-            new_room = self.game_map.get_room_at(*new_coordinates)
-
-            if new_room:
-                if isinstance(self.room, Bank) and isinstance(new_room, ElectronicsStore):
-                    blocked = True
-                elif isinstance(self.room, FoodCourt) and isinstance(new_room, Lobby):
-                    blocked = True
-                elif isinstance(self.room, ElectronicsStore) and isinstance(new_room, Lobby):
-                    blocked = True
-                if not blocked:
-                    self.current_coordinates = new_coordinates
-                    self.room = new_room
-                    self.game_map.set_player_coordinates(self)
-                    self.game_map.update_tilemap(current_row, current_col)
-                    print(f"You moved {direction}.")
-                    print(f"You have arrived in the {new_room.name}.")
-                    print(f"These are your previous values {current_row, current_col}")
-                    print(f"These are your current values{self.current_coordinates}")
-                else:
-                    print("It looks like you can't proceed through here at the moment.")
+            if isinstance(self.room, Lobby) and direction("north"):
+                commands.end_game(self.player, backpack)
             else:
-                print("Invalid direction. Try again.")
+                new_row, new_col = current_row + direction_change[0], current_col + direction_change[1]
+                new_coordinates = (new_row, new_col)
+                new_room = self.game_map.get_room_at(*new_coordinates)
+
+                if new_room:
+                    if isinstance(self.room, Bank) and isinstance(new_room, ElectronicsStore):
+                        blocked = True
+                    elif isinstance(self.room, FoodCourt) and isinstance(new_room, Lobby):
+                        blocked = True
+                    elif isinstance(self.room, ElectronicsStore) and isinstance(new_room, Lobby):
+                        blocked = True
+                    if not blocked:
+                        self.current_coordinates = new_coordinates
+                        self.room = new_room
+                        self.game_map.set_player_coordinates(self)
+                        self.game_map.update_tilemap(current_row, current_col)
+                        print(f"You moved {direction}.")
+                        print(f"You have arrived in the {new_room.name}.")
+                        print(f"These are your previous values {current_row, current_col}")
+                        print(f"These are your current values{self.current_coordinates}")
+                    else:
+                        print("It looks like you can't proceed through here at the moment.")
+                else:
+                    print("Invalid direction. Try again.")
         else:
             print("Invalid direction. Try again.")

@@ -55,7 +55,7 @@ def show_introduction():
     print("- Your ultimate goal: Escape. Survive. Shop.")
 
 
-def move_command(player):
+def move_command(player, backpack):
     """
        Manage the player's movement between rooms based on user input.
 
@@ -68,7 +68,7 @@ def move_command(player):
         choice = input("Where would you like to move?").lower()
         print(choice)
         if choice in {'north', 'south', 'east', 'west'}:
-            player.move_rooms(choice)
+            player.move_rooms(choice, backpack)
             break
         else:
             print("Invalid choice. Try again.")
@@ -167,19 +167,18 @@ def help_command():
 
 
 def main():
-    player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia, mark, katie, kento = start_game()
-    turn_counter = 00
-    show_introduction()
-
     while True:
+        player, food_court, lobby, bank, clothing_boutique, electronics_store, backpack, josh, mary, olivia, mark, katie, kento = start_game()
+        turn_counter = 0
+        show_introduction()
 
-        if not player.game_over and turn_counter <= 60:
+        while not player.game_over and turn_counter <= 60:
             print(f"You are currently in the {player.room.name}")
             print("What would you like to do?")
             choice_input = input("Please choose:").lower().strip()
 
             if choice_input.startswith('move'):
-                move_command(player)
+                move_command(player, backpack)
                 turn_counter += 1
             elif choice_input.startswith('check'):
                 turn_counter += 1
@@ -200,13 +199,27 @@ def main():
                 help_command()
             elif choice_input.startswith('wait'):
                 print("You're just hanging around.")
-                turn_counter += 1
+                turn_counter += 60
             else:
                 print("That is not a valid option")
-        elif turn_counter == 60:
-            print("It is 5.00 pm. The shops have now shut.")
-            print("You try to open the exit but all the doors are locked.")
-            print("You'll need to stay here until someone comes to free you on Monday.")
-            print("Looks like you're in for a long weekend...")
+
+        if turn_counter >= 60:
+            print("As the clock strikes 5:00 PM, an unsettling quiet descends upon the now-deserted shops.")
+            print("The once-bustling halls are now eerily silent, and the emptiness amplifies every creak and groan.")
+            print("You attempt to open the exit, but the heavy doors refuse to budge.")
+            print("The only sound is the echo of your footsteps, hauntingly loud in the empty space.")
+            print("It dawns on you that you're trapped, alone, until someone comes to free you on Monday.")
+            print("The solitude stretches ahead, and the abandoned shops seem to watch silently.")
+            print("Looks like you're in for a long, uneasy weekend...")
             print("Game over!")
-main()
+
+        if player.game_over:
+            print("As the clock strikes 5:00 PM, an unsettling quiet descends upon the now-deserted shops.")
+        play_again = input("Do you want to play again? (yes/no): ").lower()
+        if play_again != 'yes':
+            break
+
+
+
+if __name__ == "__main__":
+    main()
