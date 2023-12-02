@@ -114,17 +114,20 @@ class Olivia(Person):
     def block_exit(self, player, backpack):
         scarf = Scarf("Warm Scarf")
         dusty_scarf = Scarf("Dusty Scarf")
-        if scarf in backpack.items:
-            print(f"{self.name}: Oh! Oh! Thank you so much - how did you know I was looking for this?")
-            backpack.remove("Warm Scarf")
-            player.given_scarf = True
-        elif dusty_scarf in backpack.items:
-            print(f"{self.name}: Oh! Oh! Thank you! It's...not quite what I imagined.")
-            backpack.remove("Dusty Scarf")
-            player.given_scarf = True
+        if not player.given_scarf:
+            if scarf in backpack.items:
+                print(f"{self.name}: Oh! Oh! Thank you so much - how did you know I was looking for this?")
+                backpack.remove("Warm Scarf")
+                player.given_scarf = True
+            elif dusty_scarf in backpack.items:
+                print(f"{self.name}: Oh! Oh! Thank you! It's...not quite what I imagined.")
+                backpack.remove("Dusty Scarf")
+                player.given_scarf = True
+            else:
+                print(f"{self.name}: How long is she going to take? I really hope they don't sell "
+                      f"out of the scarf I want before I get there...")
         else:
-            print(f"{self.name}: How long is she going to take? I really hope they don't sell "
-                  f"out of the scarf I want before I get there...")
+            print(f"{self.name}: Thank you again!")
 
     def give_scarf(self, player, backpack):
         print(f"{self.name}: Oh, that's the scarf I wanted!")
@@ -163,12 +166,11 @@ class Mark(Person):
         print("You return to the entrance of the bank.")
 
     def block_exit(self, player, backpack):
-        print("You are prevented from moving ")
-        membership_card = MembershipCard("Membership Card")
-        fake_card = FakeCard("Fake ID Card")
+        print("You are prevented from moving")
         has_membership = backpack.in_backpack("Membership Card") != -1
         has_id = backpack.in_backpack("Fake ID Card") != -1
         if not player.is_member:
+            print(f"{self.name}: Sorry, mate - members only through here, I'm afraid.")
             if has_id:
                 print(f"{self.name}: Oh, you are a member after all? You must be longtime client - I don't recognise"
                       f"that design!")
@@ -178,12 +180,10 @@ class Mark(Person):
                 print(f"{self.name}: Ah, one of our regulars - please come through.")
                 player.is_member = True
             else:
-                print(f"{self.name}: Sorry, mate - members only through here, I'm afraid.")
                 print(f"{self.name}: I can sell you a pass, though. What do you say?")
                 choice = input("Do you want to buy a membership card? (Yes/No): ").lower().strip()
                 if choice == "yes":
                     self.sell_membership_card(player, backpack)
-                return False
         else:
             print(f"{self.name}: Ah, back again? Please, come through sir.")
 
@@ -226,10 +226,18 @@ class Katie(Person):
 
     def sell_interest_free_loan(self, player, backpack):
         loan_document = LoanDocument("Loan Document")
+        fraud_document = LoanDocument("Loan Document")
+        fraud_document.fraudulent = True
+
         if backpack.in_backpack("Loan Document") != -1:
             print(f"{self.name}: I love the enthusiasm, but we need to be sure you can pay it back, sorry.")
         else:
-            backpack.add(loan_document.name)
+            print(f"{self.name}: I'll just get you to write your name here, if that's okay!")
+            signed_name = input("Please write your name:")
+            if signed_name == player.name:
+                backpack.add(fraud_document.name)
+            else:
+                backpack.add(loan_document.name)
             print(f"{self.name}: Here you go, one interest free loan.")
             print(f"{self.name}:Oh? No, it's not free of interest - it comes with a 'free' loan!")
             print(f"{self.name}:That's 80% weekly interest you will need to pay back. Enjoy!")

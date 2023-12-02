@@ -55,7 +55,7 @@ def show_introduction():
     print("- Your ultimate goal: Escape. Survive. Shop.")
 
 
-def move_command(player, backpack):
+def move_command(player, backpack, turn_counter):
     """
        Manage the player's movement between rooms based on user input.
 
@@ -68,7 +68,7 @@ def move_command(player, backpack):
         choice = input("Where would you like to move?").lower()
         print(choice)
         if choice in {'north', 'south', 'east', 'west'}:
-            player.move_rooms(choice, backpack)
+            player.move_rooms(choice, backpack, turn_counter)
             break
         else:
             print("Invalid choice. Try again.")
@@ -178,7 +178,7 @@ def main():
             choice_input = input("Please choose:").lower().strip()
 
             if choice_input.startswith('move'):
-                move_command(player, backpack)
+                move_command(player, backpack, turn_counter)
                 turn_counter += 1
             elif choice_input.startswith('check'):
                 turn_counter += 1

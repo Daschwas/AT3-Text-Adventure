@@ -22,6 +22,10 @@ class Item:
         else:
             print("This will not fit inside your backpack!")
 
+    def check_item(self):
+        print(f"You examine the {self.name}")
+        print(f"{self.description}")
+
 class VendingMachine(Item):
     def __init__(self, name):
         super().__init__(name, description="A vending machine that offers a variety of refreshing drinks.")
@@ -122,21 +126,33 @@ class Watch(Item):
 class Pen(Item):
     def __init__(self, name):
         super().__init__(name, description="A basic ballpoint pen. It writes smoothly and is perfect for quick notes.")
-
+        self.can_get = True
 
 class Paperwork(Item):
     def __init__(self, name):
         super().__init__(name, description="A set of paperwork. It appears to be official bank documents.")
-
+        self.can_get = True
 
 class LoanDocument(Item):
     def __init__(self, name):
         super().__init__(name, description="A document outlining the terms of an interest-free loan. "
                                            "Read carefully; the fine print states it comes with a 'free' interest.")
+        self.can_get = True
+        self.fraudulent = False
 
+    def get_description(self):
+            print("A seemingly innocuous document, but the fine print reveals it comes with a hefty 80% weekly "
+                  "interest rate.")
+            if self.fraudulent:
+                print( "You, wisely, have signed it with a fake name.")
+
+    def check_item(self):
+        print(f"You examine the {self.name}")
+        print(self.get_description())
 
 class Camera(Item):
     def __init__(self, name):
         super().__init__(name, description="A sleek and modern camera with advanced features at a great price. It "
                                            "promises to capture memories in vivid detail. This be a valuable addition to"
                                            " your collection.")
+        self.can_get = True

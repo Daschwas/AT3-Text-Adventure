@@ -1,5 +1,5 @@
 from item import *
-
+from person import*
 class Room:
     """
     The intention of this class would be to act as a container for the NPCs and objects that are
@@ -36,6 +36,24 @@ class FoodCourt(Room):
         vending_machine = VendingMachine("Vending Machine")
         vending_machine.check(backpack)
 
+    def block_event(self, turn_counter):
+        if turn_counter < 55:
+            print("You try to move, but a large crowd is blocking your way.")
+            print("The food court is bustling with activity, and it seems difficult to navigate.")
+            print("Perhaps waiting for a while or finding an alternative route may be the way to go.")
+            return True
+        elif 55 <= turn_counter < 60:
+            print("As the clock approaches 4:55 PM, you notice a change in the atmosphere.")
+            print("The vendors start closing their stalls, and the once-bustling crowd begins to disperse.")
+            print("People are finishing their meals and heading towards the exits.")
+            print("You are now able to proceed to the exit.")
+            return False
+        else:
+            print("It's past 5:00 PM, and the shops have closed. The remaining patrons have left.")
+            print("You are now alone in the deserted food court.")
+            print("You can't proceed further, and the exits are locked.")
+            return True
+
     def look(self):
         print(f"You looked around the {self.name}")
         print("Colorful banners hang overhead, advertising the delights that each vendor has to offer. Hungry "
@@ -67,6 +85,10 @@ class Bank(Room):
         super().__init__("Bank", "A bank with counters and a waiting area. An eery quiet hangs over the room in"
                                  "comparison to the business of where you have been so far.", 2, 2)
 
+    def block_event(self, player, backpack):
+        mark = Mark("Mark")
+        mark.block_exit(player, backpack)
+
     def look(self):
         print(f"You looked around the {self.name}")
         print("As you step inside, the scent of freshly printed money tickles your nose. The atmosphere is hushed, "
@@ -80,6 +102,10 @@ class Bank(Room):
 class ElectronicsStore(Room):
     def __init__(self):
         super().__init__("Electronics Store", "A store filled with the latest gadgets and electronics.", 1, 2)
+
+    def block_event(self, player, backpack):
+        olivia = Olivia("Mark")
+        olivia.block_exit(player, backpack)
 
     def look(self):
         print(f"You looked around the {self.name}")

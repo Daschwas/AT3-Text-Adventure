@@ -1,7 +1,6 @@
 import commands
 from game_map import GameMap
 from room import *
-from commands import *
 
 class Player:
     """
@@ -30,7 +29,7 @@ class Player:
         self.is_member = False
         self.given_scarf = False
 
-    def move_rooms(self, direction, backpack):
+    def move_rooms(self, direction, backpack, turn_counter):
         """
         Move the player to a new room based on the specified direction.
         Also updates the players internal coordinates and calls a gamemap function to update the tilemap.
@@ -44,7 +43,7 @@ class Player:
 
         if direction_change:
             if isinstance(self.room, Lobby) and direction("north"):
-                commands.end_game(self.player, backpack)
+                commands.end_game(self, backpack)
             else:
                 new_row, new_col = current_row + direction_change[0], current_col + direction_change[1]
                 new_coordinates = (new_row, new_col)
@@ -53,10 +52,16 @@ class Player:
                 if new_room:
                     if isinstance(self.room, Bank) and isinstance(new_room, ElectronicsStore):
                         blocked = True
+                        self.room.block_event(self, backpack)
+                        if self.is_member:
+                            blocked = False
                     elif isinstance(self.room, FoodCourt) and isinstance(new_room, Lobby):
-                        blocked = True
+                        blocked = self.room.block_event(turn_counter)
                     elif isinstance(self.room, ElectronicsStore) and isinstance(new_room, Lobby):
                         blocked = True
+                        self.room.block_event(self, backpack)
+                        if self.given_scarf:
+                            blocked = False
                     if not blocked:
                         self.current_coordinates = new_coordinates
                         self.room = new_room
