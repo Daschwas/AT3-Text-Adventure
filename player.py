@@ -22,6 +22,7 @@ class Player:
     def move_rooms(self, direction):
         """
         Move the player to a new room based on the specified direction.
+        Also updates the players internal coordinates and calls a gamemap function to update the tilemap.
 
         Parameters:
             Direction -  The direction in which the player wants to move.
@@ -41,6 +42,7 @@ class Player:
 
         new_coordinates = (new_row, new_col)
         new_room = self.game_map.get_room_at(*new_coordinates)
+        self.game_map.update_tilemap(current_row, current_col)
 
         if new_room:
             self.current_coordinates = new_coordinates

@@ -26,3 +26,18 @@ class GameMap:
 
     def get_room_at(self, row, column):
         return self.rooms.get((row, column))
+
+    def display_map(self):
+        for i, line in enumerate(self.tilemap):
+            if i == self.player_coordinates[0]:
+                line[self.player_coordinates[1]] = "Y"
+            print(line)
+
+    def set_player_coordinates(self, player):
+        self.player_coordinates = player.current_coordinates
+
+    def update_tilemap(self, row, column):
+        previous_row, previous_col = row, column
+        self.tilemap[previous_row][previous_col] = "X"
+
+

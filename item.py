@@ -47,6 +47,10 @@ class BlankCard(Item):
 
 class Scarf(Item):
     def __init__(self, name):
-        super().__init__(name, "A cozy and stylish scarf.")
+        super().__init__(name, description="A cozy and stylish scarf.")
         self.can_get = True
 
+class Watch(Item):
+    def __init__(self, name):
+        super().__init__(name, description="A stylish and trendy watch.")
+        self.can_get = True

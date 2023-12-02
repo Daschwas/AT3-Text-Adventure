@@ -27,16 +27,16 @@ class Josh(Person):
             self.items.append(BlankCard("Blank ID Card"))
 
         def greet(self):
-            print(f"Josh: Hey, I'm {self.name}. I'm off shift at the moment - can you bother me later?")
+            print(f"{self.name}:  Hey, I'm {self.name}. I'm off shift at the moment - can you bother me later?")
 
         def give_blank_card(self, backpack):
             if BlankCard in [type(item) for item in self.items]:
                 blank_card = next(item for item in self.items if isinstance(item, BlankCard))
                 self.items.remove(blank_card)
                 backpack.add(blank_card)
-                print("Josh: You want my employee card...? You know what, sure, I was looking for an excuse to quit "
+                print(f"{self.name}:  You want my employee card...? You know what, sure, I was looking for an excuse to quit "
                       "anyway.")
-                print("Josh: That's part of the reason why I never wrote my name on this thing.")
+                print(f"{self.name}: That's part of the reason why I never wrote my name on this thing.")
                 print(f"{self.name} gives you a Blank ID Card. Maybe you'll find a use for it!")
             else:
                 print("What else do you want? Bother me later.")
@@ -46,14 +46,25 @@ class Mary(Person):
     def __init__(self):
         super().__init__("Mary", "A salesperson at the Clothing Boutique.")
         self.items.append(Scarf("Warm Scarf"))
+        self.items.append(Watch("Stylish Watch"))
 
     def greet(self):
-        print(f"Hello there! I'm {self.name}, and I work at the Clothing Boutique.")
+        print(f"{self.name}: Hello there! I'm {self.name}, and I work at the Clothing Boutique.")
 
-    def sell_scarf(self, backpack):
-        scarf = Scarf("Warm Scarf")
-        if backpack.in_backpack(scarf) != -1:
-            print("You already have a Warm Scarf! You don't need another one.")
+    def offer_items(self):
+        print(f"{self.name}: Welcome to the Clothing Boutique! Take a look at our selection:")
+        for index, item in enumerate(self.items, start=1):
+            print(f"{index}. {item.name}")
+
+    def sell_item(self, item, backpack):
+        if self.items <=1:
+            print(f"{self.name}: Sorry, I can't sell everything to you!")
+        elif item in self.items:
+            if backpack.in_backpack(item) != -1:
+                print(f"You already have a {item.name}! You don't need another one.")
+            else:
+                self.items.remove(item)
+                backpack.add(item)
+                print(f"{self.name} sells you a {item.name}. Enjoy your purchase!")
         else:
-            backpack.add(scarf)
-            print(f"{self.name} sells you a Warm Scarf. Stay warm and stylish!")
+            print(f"{self.name}: I'm sorry, but I don't have {item.name} in stock right now.")
