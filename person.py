@@ -129,3 +129,47 @@ class Mark(Person):
         else:
             backpack.add(membership_card)
             print(f"{self.name}: Here you go, one Membership card.")
+
+class Katie(Person):
+    def __init__(self):
+        super().__init__("Katie", "The friendly bank teller at the counter.")
+        self.items.append(Pen("Bank Pen"))
+        self.items.append(Paperwork("Bank Paperwork"))
+    def greet(self, player, backpack):
+        has_paperwork = backpack.in_backpack("paperwork")
+        has_pen = backpack.in_backpack("pen")
+
+        if has_paperwork or has_pen:
+                print(f"{self.name}: Hello again. Are you here as a genuine client or just to stock up on more stationery?")
+        else:
+            print(f"{self.name}: Hello there! I'm {self.name}, the bank teller. How can I assist you today?")
+            print(f"{self.name}: Oh, by the way, I can offer you an interest-free loan. It's only 50 credits. Would you like "
+              f"to buy one?")
+
+        print(f"{self.name} gestures to the pen and paperwork sitting in front of her")
+
+        choice = input("Do you want to buy an interest-free loan? (Yes/No): ").lower().strip()
+        if choice == "yes":
+            self.sell_interest_free_loan(player, backpack)
+        elif choice == "get":
+            self.get_command(player, backpack)
+        else:
+            print(f"{self.name}: Alright, let me know if you change your mind. Have a great day!")
+
+    def sell_interest_free_loan(self, player, backpack):
+        pass
+
+    def get_command(self, player, backpack):
+        choice = input("What would you like to take?").lower().strip()
+        if choice == "paperwork":
+            print("You stuff the paperwork into your backpack and quickly walk away from the table.")
+            print(f"{self.name}: Hey! Wait! I need you to sign that here!")
+            print(f"{self.name} shoots you a dirty look as you return to the entrance of the bank")
+            backpack.add(Paperwork("Bank Paperwork"))
+        elif choice == "pen":
+            print("You stuff the pen into your backpack and quickly walk away from the table.")
+            print(f"{self.name}: Hey! Wait! I need you to sign that here!")
+            print(f"{self.name} shoots you a dirty look as you return to the entrance of the bank")
+            backpack.add(Pen("Bank Pen"))
+        else:
+            print("There's nothing to take of that description.")

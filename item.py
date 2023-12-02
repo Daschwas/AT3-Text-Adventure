@@ -45,6 +45,16 @@ class BlankCard(Item):
         super().__init__(name, description="A blank ID card that belongs to Josh. It's seen better days.")
         self.can_get = True
 
+class FakeCard(Item):
+    def __init__(self, name):
+        super().__init__(name, description="You've written your name on the card - it might pass for a Membership card.")
+        self.can_get = True
+
+class MembershipCard(Item):
+    def __init__(self, name):
+        super().__init__(name, description="A membership card that grants access to exclusive benefits. It belongs to the tech club.")
+        self.can_get = True
+
 class Scarf(Item):
     def __init__(self, name):
         super().__init__(name, description="A cozy and stylish scarf.")
@@ -54,3 +64,12 @@ class Watch(Item):
     def __init__(self, name):
         super().__init__(name, description="A stylish and trendy watch.")
         self.can_get = True
+
+class Pen(Item):
+    def __init__(self, name):
+        super().__init__(name, description="A basic ballpoint pen. It writes smoothly and is perfect for quick notes.")
+
+
+class Paperwork(Item):
+    def __init__(self, name):
+        super().__init__(name, description="A set of paperwork. It appears to be official bank documents.")
