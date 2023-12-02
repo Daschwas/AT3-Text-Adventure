@@ -17,7 +17,13 @@ class Player:
         self.name = name
         self.room = room
         self.game_over = False
-        self.current_coordinates = (2, 1)
+        self.current_coordinates = (1, 0)
+        self.direction_map = {
+            'north': (-1, 0),
+            'south': (1, 0),
+            'east': (0, 1),
+            'west': (0, -1),
+        }
 
     def move_rooms(self, direction):
         """
@@ -29,26 +35,23 @@ class Player:
         """
 
         current_row, current_col = self.current_coordinates
-        new_row, new_col = current_row, current_col
+        direction_change = self.direction_map.get(direction)
 
-        if direction == 'north':
-            new_row -= 1
-        elif direction == 'south':
-            new_row += 1
-        elif direction == 'east':
-            new_col += 1
-        elif direction == 'west':
-            new_col -= 1
+        if direction_change:
+            new_row, new_col = current_row + direction_change[0], current_col + direction_change[1]
+            new_coordinates = (new_row, new_col)
+            new_room = self.game_map.get_room_at(*new_coordinates)
 
-        new_coordinates = (new_row, new_col)
-        new_room = self.game_map.get_room_at(*new_coordinates)
-
-        if new_room:
-            self.current_coordinates = new_coordinates
-            self.room = new_room
-            self.game_map.set_player_coordinates(self)
-            self.game_map.update_tilemap(current_row, current_col)
-            print(f"You moved {direction}.")
-            print(f"You have arrived in the {new_room.name}.")
+            if new_room:
+                self.current_coordinates = new_coordinates
+                self.room = new_room
+                self.game_map.set_player_coordinates(self)
+                self.game_map.update_tilemap(current_row, current_col)
+                print(f"You moved {direction}.")
+                print(f"You have arrived in the {new_room.name}.")
+                print(f"These are your previous values {current_row, current_col}")
+                print(f"These are your current values{self.current_coordinates}")
+            else:
+                print("Invalid direction. Try again.")
         else:
             print("Invalid direction. Try again.")
