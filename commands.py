@@ -1,4 +1,5 @@
 from room import *
+import random
 
 
 def end_game(player, backpack):
@@ -16,46 +17,55 @@ def end_game(player, backpack):
 
     print("As the clock strikes 5:00 PM, you find yourself at the exit of the bustling shopping mall.")
 
+    # win scenario: escaping with a camera and no loan
     if has_camera and not has_loan:
         print("Congratulations! You successfully navigated the maze of shops, capturing vibrant and memorable moments "
               "with your new camera.")
         print("The snapshots of laughter, dazzling storefronts, and unexpected encounters will be cherished forever.")
         print("It's been a successful and enjoyable shopping adventure!")
+    # win scenario: escaping with a watch and no loan
     elif has_watch and not has_loan:
         print("You glance at your new stylish watch and realize you spent the day strolling through the mall, "
               "enjoying its ambiance.")
         print("Not only did you get the item of your desire, the experience itself was also worth every moment.")
         print("You leave the mall with a sense of contentment.")
+    # lose scenario: escaping with no valuable items
     else:
         print("Unfortunately, your shopping spree didn't go as planned and you leave largely empty-handed.")
         print("Better luck next time!")
         player.game_over = True
 
+    # extra flavour text if player successfully fooled bank teller
     if has_fraud:
         print("You breathe a sigh of relief as you realise you narrowly escaped taking on a heavy loan by using a "
               "fake name.")
         print("It's a reminder to be cautious and honest in financial dealings. Dodging that bullet was a close call!")
 
+    # lose scenario: has camera but also has loan
     if has_camera and has_loan:
         print("Despite the joy of capturing moments with your new camera, you can't shake the uneasy feeling of having "
               "a signed loan document in your backpack.")
         print("The terms look challenging, and the weight of potential debt lingers. It's a lesson learned about the "
               "importance of financial responsibility.")
         player.game_over = True
-    elif has_camera and has_loan:
+    # lose scenario: has watch but also has loan
+    elif has_watch and has_loan:
         print("You weigh the pros and cons of your purchases. The camera brought joy, but the signed loan document "
               "brings a sense of responsibility.")
         print("The terms look challenging, and the weight of potential debt lingers. It's a lesson learned about the "
               "importance of financial responsibility.")
         player.game_over = True
+    # lose scenario: has loan
     elif has_loan:
         print("You exit the mall with a signed loan document in your backpack. The terms look challenging.")
         print("Hopefully, you can manage the repayments. It's a reminder to be cautious about what you agree to.")
         player.game_over = True
 
+    # checks if player "won"
     if not player.game_over:
         print("You win! Your shopping adventure was huge success!")
         player.game_over = True
+    # extra flavour text if player loses
     else:
         print(
             "Game Over! Whether it was the maze-like layout or unexpected challenges, this shopping trip didn't go as "
@@ -183,7 +193,8 @@ def talk_command(player, backpack, npcs):
         npc_name = "josh"
     if (npc_name == "man" or npc_name == "guard") and isinstance(player.room, Bank):
         npc_name = "mark"
-    if (npc_name == "woman" or npc_name == "employee" or npc_name.startswith("bank")) and isinstance(player.room, Bank):
+    if (npc_name == "woman" or npc_name == "employee" or npc_name.startswith("bank") or npc_name.endswith("teller")) \
+            and isinstance(player.room, Bank):
         npc_name = "katie"
     if (npc_name == "woman" or npc_name == "employee" or npc_name.endswith("vendor")) and isinstance(player.room,
                                                                                                      ClothingBoutique):
@@ -228,12 +239,19 @@ def get_command(player, backpack):
         print(f"You try to find {choice} but to no avail.")
 
 
-def look_command(player):
+def look_command(player, backpack):
     """
     Displays information about the current room and (at random) gives the player an opportunity to get more money.
     :param player: The player.
+    :param backpack: The player's backpack.
     """
     player.room.look()
+    # handles a random event that the player can find some money, preventing game over from running out of funds
+    # This has been set to a 1/23 chance but these odds can be changed.
+    if random.randint(1, 23) == 1:
+        print("While looking around, you see a coin on the ground.")
+        print("Hey, it's $1. Lucky find! You add the dollar to your backpack")
+        backpack.add_money(1)
 
 
 def check_command(player, backpack, turn_counter):
@@ -255,7 +273,7 @@ def check_command(player, backpack, turn_counter):
     elif check_input.startswith('backpack'):
         backpack.list()
     elif check_input == "room":
-        look_command(player)
+        look_command(player, backpack)
     elif check_input == "time":
         if turn_counter <= 9:
             print(f"It is 4.0{turn_counter} pm")

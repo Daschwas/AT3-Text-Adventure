@@ -15,6 +15,7 @@ def start_game():
     clothing_boutique = ClothingBoutique()
     electronics_store = ElectronicsStore()
     player = create_player(food_court)
+    # sets opening money value of player to $40
     backpack = BackPack([], 40)
     josh = Josh()
     mary = Mary()
@@ -52,6 +53,7 @@ def main():
         turn_counter = 0
         show_introduction()
 
+        # handles the different command choices
         while not player.game_over and turn_counter <= 60:
             print(f"You are currently in the {player.room.name}")
             print(f"What would you like to do?\n")
@@ -67,7 +69,7 @@ def main():
                 talk_command(player, backpack, [josh, mary, olivia, katie, mark, kento])
                 turn_counter += 1
             elif choice_input.startswith('look'):
-                look_command(player)
+                look_command(player, backpack)
                 turn_counter += 1
             elif choice_input.startswith('get'):
                 get_command(player, backpack)
@@ -83,6 +85,7 @@ def main():
             else:
                 print("That is not a valid option")
 
+        # lose scenario if player runs out of time
         if turn_counter >= 60:
             print("As the clock strikes 5:00 PM, an unsettling quiet descends upon the now-deserted shops.")
             print("The once-bustling halls are now eerily silent, and the emptiness amplifies every creak and groan.")
@@ -93,6 +96,7 @@ def main():
             print("Looks like you're in for a long, uneasy weekend...\n")
             print("Game over!")
 
+        # play again option
         play_again = input("Do you want to play again? (yes/no): \n").lower()
         if play_again != 'yes':
             break

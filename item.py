@@ -1,5 +1,5 @@
 from backpack import *
-
+import random
 
 class Item:
     """
@@ -66,7 +66,13 @@ class VendingMachine(Item):
         elif direction == "right":
             print("Turning your attention to the right, you find a discarded soda can and a crumpled receipt.")
             print("It appears that the vending machine's visitors occasionally leave behind a trace of their presence.")
-            print("Nothing particularly useful catches your eye.")
+            # Random chance set to 1/30 for the player to find money.
+            if random.randint(1, 30) == 1:
+                print("While looking around, you see a coin on the ground.")
+                print("Hey, it's $2. Lucky find! You add the dollar to your backpack")
+                backpack.add_money(2)
+            else:
+                print("Nothing particularly useful catches your eye.")
         elif direction == "behind":
             if has_scarf:
                 print("The bag still sits there but nothing new of note is there since you last checked.")
