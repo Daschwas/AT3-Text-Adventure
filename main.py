@@ -57,7 +57,7 @@ def main():
         while not player.game_over and turn_counter <= 60:
             print(f"You are currently in the {player.room.name}")
             print(f"What would you like to do?\n")
-            choice_input = input("Please choose:").lower().strip()
+            choice_input = input("Please choose: ").lower().strip()
 
             # Move command
             if choice_input.startswith('move'):

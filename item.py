@@ -84,7 +84,8 @@ class VendingMachine(Item):
         :param backpack: The player's backpack.
         """
         bottled_water = BottledWater("Bottled Water")
-        print("You insert coins into the vending machine and purchase a bottle of water. It's refreshing!")
+        print("You insert a dollar coin into the vending machine and purchase a bottle of water. It's refreshing!")
+        backpack.remove_money(1)
         bottled_water.get_item(backpack)
 
     def look(self, direction, backpack):
@@ -162,7 +163,7 @@ class BottledWater(Item):
         :param backpack: The player's backpack.
         """
         print("You drink the bottle of water and feel refreshed!\n")
-        backpack.remove(self)
+        backpack.remove("Bottled Water")
 
 
 class BlankCard(Item):

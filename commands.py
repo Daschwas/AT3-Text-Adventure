@@ -1,5 +1,6 @@
 from room import *
 import random
+from item import *
 
 
 def end_game(player, backpack):
@@ -22,7 +23,6 @@ def end_game(player, backpack):
         print("Congratulations! You successfully navigated the maze of shops, capturing vibrant and memorable moments "
               "with your new camera.")
         print("The snapshots of laughter, dazzling storefronts, and unexpected encounters will be cherished forever.")
-        print("It's been a successful and enjoyable shopping adventure!")
     # win scenario: escaping with a watch and no loan
     elif has_watch and not has_loan:
         print("You glance at your new stylish watch and realize you spent the day strolling through the mall, "
@@ -76,57 +76,64 @@ def end_game(player, backpack):
 def use_item(backpack, turn_counter):
     """
     Allows the player to use an item currently in their backpack.
+    Calls the use item list function.
 
     :param backpack: The player's backpack.
     :param turn_counter: The turn counter representing the time.
     :return:
     """
     backpack.list()
-    used_item_name = input("What would you like to use? ").strip()
+    used_item_name = input("What would you like to use? ").strip().lower()
 
-    if backpack.in_backpack(used_item_name) != -1:
-        item_instance = create_item_instance(used_item_name)
-
-        if item_instance:
-            if isinstance(item_instance, Scarf):
-                if item_instance.name == "Dusty Scarf":
-                    item_instance.use_dusty_item(backpack)
-                elif item_instance.name == "Warm Scarf":
-                    item_instance.use_warm_item(backpack)
-                else:
-                    print(f"You can't use the {item_instance.name} in this way.")
-            elif isinstance(item_instance, Watch):
-                item_instance.use_item(backpack, turn_counter)
-            else:
-                item_instance.use_item(backpack)
-        else:
-            print("You can't use that item.")
-    else:
-        print("You don't have that item in your backpack.")
+    use_item_list(used_item_name, backpack, turn_counter)
 
 
-def create_item_instance(item_name):
+def use_item_list(item_name, backpack, turn_counter):
     """
     Creates an instance of an item depending on it's name which is then used in the use function.
     :param item_name: The name of the item.
-    :return: An instance of the corresponding item class.
+    :param backpack: The player's back.
+    :param turn_counter: The current time.
+    :return: None if item does not exist.
     """
-    item_mapping = {
-        "warm scarf": Scarf("Warm Scarf"),
-        "stylish watch": Watch("Stylish Watch"),
-        "bottled water": BottledWater("Bottled Water"),
-        "blank card": BlankCard("Blank Card"),
-        "fake card": FakeCard("Fake Card"),
-        "membership card": MembershipCard("Membership Card"),
-        "scarf": Scarf("Scarf"),
-        "watch": Watch("Stylish Watch"),
-        "bank pen": Pen("Bank Pen"),
-        "paperwork": Paperwork("Bank Paperwork"),
-        "loan document": LoanDocument("Loan Document", "Loan Document with Fake Name"),
-        "camera": Camera("Camera")
-    }
-
-    return item_mapping.get(item_name)
+    if item_name.startswith("dusty") and backpack.in_backpack("Dusty Scarf") != -1:
+        scarf = Scarf("scarf")
+        scarf.use_dusty_item(backpack)
+    elif (item_name.startswith("warm") or item_name.startswith("warm") or item_name.endswith("scarf")) and \
+            backpack.in_backpack("Warm Scarf") != -1:
+        scarf = Scarf("scarf")
+        scarf.use_warm_item(backpack)
+    elif item_name.endswith("pen") and backpack.in_backpack("Bank Pen") != -1:
+        pen = Pen("pen")
+        pen.use_item(backpack)
+    elif item_name.startswith("blank") and backpack.in_backpack("Blank ID Card") != -1:
+        card = BlankCard("Card")
+        card.use_item(backpack)
+    elif item_name.startswith("fake") and backpack.in_backpack("Fake ID Card") != -1:
+        card = FakeCard("Card")
+        card.use_item(backpack)
+    elif item_name.startswith("membership") and backpack.in_backpack("Membership Card") != -1:
+        card = MembershipCard("Card")
+        card.use_item(backpack)
+    elif item_name.endswith("watch") and backpack.in_backpack("Stylish Watch") != -1:
+        watch = Watch("Watch")
+        watch.use_item(backpack, turn_counter)
+    elif item_name.endswith("camera") and backpack.in_backpack("Camera") != -1:
+        camera = Camera("Camera")
+        camera.use_item(backpack)
+    elif (item_name.endswith("document") or item_name.startswith("loan")) and \
+            (backpack.in_backpack("Loan Document") or backpack.in_backpack("Loan Document with Fake Name")) != -1:
+        document = LoanDocument("Document")
+        document.use_item(backpack)
+    elif item_name.endswith("water") and backpack.in_backpack("Bottled Water") != -1:
+        bottled_water = BottledWater("Bottled Water")
+        bottled_water.use_item(backpack)
+    elif item_name.endswith("paperwork") and backpack.in_backpack("Bank Paperwork") != 1:
+        paperwork = Paperwork("Paperwork")
+        paperwork.use_item(backpack)
+    else:
+        print(f"You don't have a '{item_name}'!")
+        return None
 
 
 def help_command():
