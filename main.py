@@ -73,7 +73,7 @@ def main():
                 get_command(player, backpack)
                 turn_counter += 1
             elif choice_input.startswith('use'):
-                use_item(player, backpack, turn_counter)
+                use_item(backpack, turn_counter)
                 turn_counter += 1
             elif choice_input.startswith('help'):
                 help_command()

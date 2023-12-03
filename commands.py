@@ -1,8 +1,14 @@
-from main import *
-from item import *
 from room import *
 
+
 def end_game(player, backpack):
+    """
+    Display's different messages at the end of the game depending on what the player has achieved.
+    Then sets the player's game over flag to true so the user can replay the game.
+
+    :param player: The player.
+    :param backpack: The player's backpack.
+    """
     has_camera = backpack.in_backpack("Camera") != -1
     has_watch = backpack.in_backpack("Stylish Watch") != -1
     has_loan = backpack.in_backpack("Loan Document") != -1
@@ -56,7 +62,15 @@ def end_game(player, backpack):
             "planned.")
         print("Better luck next time! The mall is always open for new adventures.")
 
-def use_item(player, backpack, turn_counter):
+
+def use_item(backpack, turn_counter):
+    """
+    Allows the player to use an item currently in their backpack.
+
+    :param backpack: The player's backpack.
+    :param turn_counter: The turn counter representing the time.
+    :return:
+    """
     backpack.list()
     used_item_name = input("What would you like to use? ").strip()
 
@@ -80,7 +94,13 @@ def use_item(player, backpack, turn_counter):
     else:
         print("You don't have that item in your backpack.")
 
+
 def create_item_instance(item_name):
+    """
+    Creates an instance of an item depending on it's name which is then used in the use function.
+    :param item_name: The name of the item.
+    :return: An instance of the corresponding item class.
+    """
     item_mapping = {
         "warm scarf": Scarf("Warm Scarf"),
         "stylish watch": Watch("Stylish Watch"),
@@ -98,6 +118,7 @@ def create_item_instance(item_name):
 
     return item_mapping.get(item_name)
 
+
 def help_command():
     """
     Display help information about the game controls.
@@ -110,6 +131,7 @@ def help_command():
     print("- 'Get': Pick up an item.")
     print("- 'Use': Use an item in your inventory.")
     print("- 'Help': Display this help message.")
+
 
 def show_introduction():
     """
@@ -135,6 +157,8 @@ def move_command(player, backpack, turn_counter):
 
        Parameters:
             player (Player): The player.
+            backpack (Backpack): The player's backpack.
+            turn_counter: The current turn counter representing the in game time.
     """
     current_room = player.room
     print(f"You are in the {current_room.name}")
@@ -147,6 +171,13 @@ def move_command(player, backpack, turn_counter):
 
 
 def talk_command(player, backpack, npcs):
+    """
+    Handles the player's attempt to talk to different instances of the person class (ie; NPCs) within the game.
+
+    :param player: The player.
+    :param backpack: The player's backpack.
+    :param npcs: List of instances of the person class within the current room.
+    """
     npc_name = input("Who would you like to talk to?").lower().strip()
     if (npc_name == "man" or npc_name == "employee") and isinstance(player.room, FoodCourt):
         npc_name = "josh"
@@ -171,6 +202,13 @@ def talk_command(player, backpack, npcs):
 
 
 def get_command(player, backpack):
+    """
+    This function handles the user inputting the get command to try and obtain an item.
+    It also provides some hints on what to do in the game depending on the keyword entered.
+
+    :param player: The player.
+    :param backpack: The player's backpack.
+    """
     has_scarf = backpack.in_backpack("Warm Scarf") != -1
     choice = input("Who would you like to get?").lower().strip()
     if (choice.endswith("card") or choice.endswith("ID") or choice.endswith("hat")) and isinstance(player.room,
@@ -189,11 +227,23 @@ def get_command(player, backpack):
     else:
         print(f"You try to find {choice} but to no avail.")
 
+
 def look_command(player):
+    """
+    Displays information about the current room and (at random) gives the player an opportunity to get more money.
+    :param player: The player.
+    """
     player.room.look()
 
 
 def check_command(player, backpack, turn_counter):
+    """
+    Handles the player's attempt to check different elements within the game when they use the check keyword.
+
+    :param player: The player.
+    :param backpack: The player's backpack.
+    :param turn_counter: The current turn counter representing the time.
+    """
     print(f"What would you like to check?")
     print(f"Type 'map' to check the map and 'backpack' to check your backpack.")
     print(f"Type 'room' if you want to check out your surroundings.")
@@ -217,6 +267,3 @@ def check_command(player, backpack, turn_counter):
         print(f"You have ${backpack.money}.")
     else:
         print(f"You check {check_input} but it does not exist. Passerby's look at you oddly.")
-
-
-
