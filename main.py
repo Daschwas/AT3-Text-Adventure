@@ -1,6 +1,6 @@
 from commands import *
 from player import Player
-
+from backpack import BackPack
 
 def start_game():
     """
