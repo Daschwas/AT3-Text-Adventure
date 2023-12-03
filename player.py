@@ -84,6 +84,6 @@ class Player:
                     else:
                         print("It looks like you can't proceed through here at the moment.\n")
                 else:
-                    print("Invalid direction. Try again.\n")
+                    print("Invalid direction. 'Check' the map and try again.\n")
         else:
-            print("Invalid direction. Try again.\n")
+            print("Invalid direction. 'Check' the map and try again.\n")

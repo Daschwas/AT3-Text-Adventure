@@ -94,7 +94,7 @@ class VendingMachine(Item):
         :param direction: The direction to look (left/right/behind).
         :param backpack: The player's backpack.
         """
-        scarf = Scarf("Dusty Scarf")
+        scarf = Scarf("Dusty Scarf", 0)
         has_scarf = backpack.in_backpack("Dusty Scarf") != -1
         # If player looks left of the vending machine.
         if direction == "left":
@@ -219,7 +219,7 @@ class MembershipCard(Item):
     """
     Class that represents the Membership Card object which can be purchased.
     """
-    def __init__(self, name):
+    def __init__(self, name, cost):
         """
         Initializes an instance of the MembershipCard object.
         """
@@ -227,6 +227,7 @@ class MembershipCard(Item):
                          description="A membership card that grants access to exclusive benefits. It belongs to the "
                                      "tech club.")
         self.can_get = True
+        self.cost = cost
 
     def use_item(self, backpack):
         """
@@ -242,12 +243,13 @@ class Scarf(Item):
     """
     Class that represents the scarf object used in a side-quest - there are two types (Dusty and Warm).
     """
-    def __init__(self, name):
+    def __init__(self, name, cost):
         """
         Initializes an instance of the Scarf object.
         """
         super().__init__(name, description="A cozy and stylish scarf.")
         self.can_get = True
+        self.cost = cost
 
     def use_warm_item(self, backpack):
         """
@@ -270,12 +272,13 @@ class Watch(Item):
     """
     Class that represents the watch item which is a high value item that leads to a win scenario.
     """
-    def __init__(self, name):
+    def __init__(self, name, cost):
         """
         Initializes an instance of the Watch object.
         """
         super().__init__(name, description="A stylish and trendy watch.")
         self.can_get = True
+        self.cost = cost
 
     def use_item(self, backpack, turn_counter):
         """
@@ -304,7 +307,7 @@ class Pen(Item):
         """
         print("You whip out the pen you stole from the bank teller.")
         choice = input("What would you like to use the pen on? ").lower().strip()
-        if choice.startswith("blank") and backpack.in_backpack("Blank ID Card") != -1:
+        if (choice.startswith("blank") or choice.endswith("card")) and backpack.in_backpack("Blank ID Card") != -1:
             print("You write your name on the Blank ID Card.")
             print("Could this maybe pass as a Membership Card?")
             backpack.remove("Blank ID Card")
@@ -314,6 +317,8 @@ class Pen(Item):
             print("You make some quick notes on the paperwork.")
         elif choice == "loan document" and backpack.in_backpack("Loan Document") != -1:
             print("You scribble on the loan document. Is this really a good idea?")
+        elif choice == "loan document" and backpack.in_backpack("Loan Document with Fake Name") != -1:
+            print("You scribble a sketch next to the fake name you put on the document.")
         elif (choice.endswith("bottle") or choice.endswith("water")) and backpack.in_backpack("Bottled Water") != -1:
             print("You write your name on the water bottle. Is there anything else you could write your name on?")
         else:
@@ -383,7 +388,7 @@ class Camera(Item):
     """
     Class that represents the Camera item. This is a high value item that allows the player to 'win' the game.
     """
-    def __init__(self, name):
+    def __init__(self, name, cost):
         """
         Initializes an instance of the Camera object.
         """
@@ -391,6 +396,7 @@ class Camera(Item):
                                            "promises to capture memories in vivid detail. This be a valuable addition "
                                            "to your collection.")
         self.can_get = True
+        self.cost = cost
 
     def use_item(self, backpack):
         """

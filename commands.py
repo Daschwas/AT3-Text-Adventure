@@ -1,5 +1,4 @@
 from room import *
-import random
 from item import *
 
 
@@ -17,15 +16,16 @@ def end_game(player, backpack):
     has_fraud = backpack.in_backpack("Loan Document with Fake Name") != -1
 
     print("As the clock strikes 5:00 PM, you find yourself at the exit of the bustling shopping mall.")
+    print(f"Your wallet took a hit, with only ${backpack.money} left. However...")
 
     # win scenario: escaping with a camera and no loan
     if has_camera and not has_loan:
-        print("Congratulations! You successfully navigated the maze of shops, capturing vibrant and memorable moments "
+        print("You successfully navigated the maze of shops, capturing vibrant and memorable moments "
               "with your new camera.")
         print("The snapshots of laughter, dazzling storefronts, and unexpected encounters will be cherished forever.")
     # win scenario: escaping with a watch and no loan
     elif has_watch and not has_loan:
-        print("You glance at your new stylish watch and realize you spent the day strolling through the mall, "
+        print("You glance at your new stylish watch and appreciate you spent the day strolling through the mall, "
               "enjoying its ambiance.")
         print("Not only did you get the item of your desire, the experience itself was also worth every moment.")
         print("You leave the mall with a sense of contentment.")
@@ -97,11 +97,11 @@ def use_item_list(item_name, backpack, turn_counter):
     :return: None if item does not exist.
     """
     if item_name.startswith("dusty") and backpack.in_backpack("Dusty Scarf") != -1:
-        scarf = Scarf("scarf")
+        scarf = Scarf("scarf", 0)
         scarf.use_dusty_item(backpack)
     elif (item_name.startswith("warm") or item_name.startswith("warm") or item_name.endswith("scarf")) and \
             backpack.in_backpack("Warm Scarf") != -1:
-        scarf = Scarf("scarf")
+        scarf = Scarf("scarf", 0)
         scarf.use_warm_item(backpack)
     elif item_name.endswith("pen") and backpack.in_backpack("Bank Pen") != -1:
         pen = Pen("pen")
@@ -113,16 +113,20 @@ def use_item_list(item_name, backpack, turn_counter):
         card = FakeCard("Card")
         card.use_item(backpack)
     elif item_name.startswith("membership") and backpack.in_backpack("Membership Card") != -1:
-        card = MembershipCard("Card")
+        card = MembershipCard("Card", 0)
         card.use_item(backpack)
     elif item_name.endswith("watch") and backpack.in_backpack("Stylish Watch") != -1:
-        watch = Watch("Watch")
+        watch = Watch("Watch", 0)
         watch.use_item(backpack, turn_counter)
     elif item_name.endswith("camera") and backpack.in_backpack("Camera") != -1:
-        camera = Camera("Camera")
+        camera = Camera("Camera", 0)
         camera.use_item(backpack)
     elif (item_name.endswith("document") or item_name.startswith("loan")) and \
-            (backpack.in_backpack("Loan Document") or backpack.in_backpack("Loan Document with Fake Name")) != -1:
+            backpack.in_backpack("Loan Document with Fake Name") != -1:
+        document = LoanDocument("Document")
+        document.use_item(backpack)
+    elif (item_name.endswith("document") or item_name.startswith("loan")) and \
+            backpack.in_backpack("Loan Document") != -1:
         document = LoanDocument("Document")
         document.use_item(backpack)
     elif item_name.endswith("water") and backpack.in_backpack("Bottled Water") != -1:
@@ -160,12 +164,11 @@ def show_introduction():
     print("As you check the time, you realize the crowds are growing, and you must navigate the shopping center "
           "strategically to survive and snag a great deal.")
     print("\nInstructions:")
-    print(
-        "- Use the following commands in combination with an object or person: 'Get', 'Use', 'Check', 'Talk', 'Leave', "
-        "and 'Look'.")
-    print("If you are ever stuck, type 'Help' for advice")
+    print("- Use the following commands in combination with an object or person: 'Get', 'Use', 'Check', 'Talk', "
+          "'Leave', and 'Look'.")
+    print("- If you are ever stuck, type 'Help' for advice or 'Look' around the room.")
     print("- Use 'Move' in combination with 'North', 'East', 'South', and 'West' to explore the map.")
-    print("- Your ultimate goal: Escape. Survive. Shop.")
+    print("- Your ultimate goal: Escape. Survive. Shop.\n")
 
 
 def move_command(player, backpack, turn_counter):
@@ -178,8 +181,8 @@ def move_command(player, backpack, turn_counter):
             turn_counter: The current turn counter representing the in game time.
     """
     current_room = player.room
-    print(f"You are in the {current_room.name}")
-    choice = input("Where would you like to move?").lower()
+    print(f"You are in the {current_room.name}.")
+    choice = input("Where would you like to move? ").lower()
     print(choice)
     if choice in {'north', 'south', 'east', 'west'}:
         player.move_rooms(choice, backpack, turn_counter)
@@ -195,7 +198,7 @@ def talk_command(player, backpack, npcs):
     :param backpack: The player's backpack.
     :param npcs: List of instances of the person class within the current room.
     """
-    npc_name = input("Who would you like to talk to?").lower().strip()
+    npc_name = input("Who would you like to talk to? ").lower().strip()
     if (npc_name == "man" or npc_name == "employee") and isinstance(player.room, FoodCourt):
         npc_name = "josh"
     if (npc_name == "man" or npc_name == "guard") and isinstance(player.room, Bank):
@@ -228,7 +231,7 @@ def get_command(player, backpack):
     :param backpack: The player's backpack.
     """
     has_scarf = backpack.in_backpack("Warm Scarf") != -1
-    choice = input("Who would you like to get?").lower().strip()
+    choice = input("Who would you like to get? ").lower().strip()
     if (choice.endswith("card") or choice.endswith("ID") or choice.endswith("hat")) and isinstance(player.room,
                                                                                                    FoodCourt):
         print("You'll have to approach the man first before you can take his items.")
@@ -273,8 +276,9 @@ def check_command(player, backpack, turn_counter):
     print(f"Type 'map' to check the map and 'backpack' to check your backpack.")
     print(f"Type 'room' if you want to check out your surroundings.")
     print(f"Type 'time' if you want to check the current time.")
+    print(f"Type 'money' if you want to check your current funds.")
     print(f"Otherwise type an object if you wish to check that out.")
-    check_input = input("Please choose:").lower().strip()
+    check_input = input("Please choose: ").lower().strip()
     # Checks map
     if check_input.startswith('map'):
         player.game_map.display_map()

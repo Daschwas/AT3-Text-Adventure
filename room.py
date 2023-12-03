@@ -81,15 +81,15 @@ class FoodCourt(Room):
         """
         Provides a description of the room to be used with the look command.
         """
-        print(f"You looked around the {self.name}")
+        print(f"You looked around the {self.name}. ")
         print("Colorful banners hang overhead, advertising the delights that each vendor has to offer. Hungry "
-              "patrons bustle around, deciding between savory bites and sweet treats. A vending machine ")
-        print("Various vendors and stores line the perimeter, each offering a tempting array of culinary delights."
+              "patrons bustle around, deciding between savory bites and sweet treats. ")
+        print("Various vendors and stores line the perimeter, each offering a tempting array of culinary delights. "
               "People are seated at tables, enjoying their meals and engaged in conversation.")
-        print("A VENDING MACHINE sits in the corner of the room, with people frequently obtaining drinks from there.")
-        print("A tired EMPLOYEE sits at one table with his hat and ID card discard sitting by him.")
-        print("To the east, you can see the entrance to the Lobby, and to the south, a pathway leads to the Bank.")
-        print("There appears to be a CROWD around the entrance to the lobby.")
+        print("A VENDING MACHINE sits in the corner of the room, with people frequently obtaining drinks from there. ")
+        print("A tired EMPLOYEE sits at one table with his hat and ID card discard sitting by him. ")
+        print("To the east, you can see the entrance to the Lobby, and to the south, a pathway leads to the Bank. ")
+        print("There appears to be a CROWD around the entrance to the lobby. \n")
 
 
 class Lobby(Room):
@@ -104,12 +104,13 @@ class Lobby(Room):
         """
         Provides a description of the room to be used with the look command.
         """
-        print(f"You looked around the {self.name}")
+        print(f"You looked around the {self.name}. ")
         print("The Lobby is a spacious area bustling with activity. Various shops surround the central space, "
-              "and people move about with purpose.")
-        print("The air is filled with a mix of scents from nearby stores. The atmosphere is vibrant, and the sound of "
-              "shoppers and conversations creates a lively symphony. To the south, you can see the Food Court, and to "
-              "the east, the Electronics Store beckons.")
+              "and people move about with purpose. ")
+        print("The air is filled with a mix of scents from nearby stores. ")
+        print("The atmosphere is vibrant, and the sound of shoppers and conversations creates a lively symphony. ")
+        print("To the south, you can see the Food Court, and to the east, the Electronics Store beckons. ")
+        print("And to the north, you can see the exit to the shopping mall. Your destination is in sight.\n")
 
 
 class Bank(Room):
@@ -133,13 +134,14 @@ class Bank(Room):
         """
         Provides a description of the room to be used with the look command.
         """
-        print(f"You looked around the {self.name}")
-        print("As you step inside, the scent of freshly printed money tickles your nose. The atmosphere is hushed, "
-              "and the gentle hum of counting machines provides a soothing background noise. The sleek marble counters"
-              " gleam under the soft glow of chandeliers.")
+        print(f"You looked around the {self.name}. ")
+        print("As you step inside, the scent of freshly printed money tickles your nose. ")
+        print("The atmosphere is hushed, and the gentle hum of counting machines provides a soothing"
+              " background noise. ")
+        print("The sleek marble counters gleam under the soft glow of chandeliers. ")
         print("A BANK TELLER is assisting people at the counter - she is efficiently processing transactions with a"
-              "friendly smile")
-        print("There are exits to the north, west and south - however a stern looking MAN blocks the north exit.")
+              "friendly smile. ")
+        print("There are exits to the north, west and south - however a stern looking MAN blocks the north exit.\n")
 
 
 class ElectronicsStore(Room):
@@ -163,13 +165,13 @@ class ElectronicsStore(Room):
         """
         Provides a description of the room to be used with the look command.
         """
-        print(f"You looked around the {self.name}")
+        print(f"You looked around the {self.name}.")
         print("You're surrounded by a dazzling display of cutting-edge gadgets and electronic marvels. Bright screens "
               "illuminate the space, showcasing the latest in technology.")
-        print("Customers explore the aisles, mesmerized by the sleek devices on the shelves. The air is charged with "
-              "the excitement of innovation. To the west, you can see the entrance to the Lobby, and to the south, "
-              "a path leads to the Bank.")
-        print('A WOMAN stands impatiently by the entrance to the Lobby, frequently checking her phone')
+        print("Customers explore the aisles, mesmerized by the sleek devices on the shelves. ")
+        print("The air is charged with the excitement of innovation. ")
+        print("To the west, you can see the entrance to the Lobby, and to the south, a path leads to the Bank.")
+        print('A WOMAN stands impatiently by the entrance to the Lobby, frequently checking her phone.\n')
 
 
 class ClothingBoutique(Room):
@@ -183,9 +185,10 @@ class ClothingBoutique(Room):
         """
         Provides a description of the room to be used with the look command.
         """
-        print(f"You looked around the {self.name}")
+        print(f"You looked around the {self.name}.")
         print("Racks of stylish clothes adorn the walls, each garment vying for attention with its unique design and"
               " flair.")
         print("Soft lighting creates an inviting ambiance, and a fitting room in the corner beckons those eager to try "
-              "on the latest trends. To the north, you can see the entrance to the Bank.")
-        print("A friendly VENDOR stands by ready to assist you with your fashion choices")
+              "on the latest trends. ")
+        print("To the north, you can see the entrance to the Bank. ")
+        print("A friendly VENDOR stands by ready to assist you with your fashion choices. \n")

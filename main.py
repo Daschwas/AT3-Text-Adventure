@@ -2,6 +2,7 @@ from commands import *
 from player import Player
 from backpack import BackPack
 
+
 def start_game():
     """
         Initialize the game by creating instances of rooms and NPCs, and creating the player character.
@@ -34,10 +35,7 @@ def create_player(starting_room):
     :return: new_player: The player character for the game.
     """
     player_name = input("Enter your name: ")
-    print(f"{starting_room.name}")
     new_player = Player(player_name, starting_room)
-    print(f"{new_player.room.name}")
-    print(f"{new_player.room.description}")
     return new_player
 
 
@@ -55,8 +53,8 @@ def main():
 
         # handles the different command choices
         while not player.game_over and turn_counter <= 60:
-            print(f"You are currently in the {player.room.name}")
-            print(f"What would you like to do?\n")
+            print(f"You are currently in the {player.room.name}.")
+            print(f"What would you like to do? \n")
             choice_input = input("Please choose: ").lower().strip()
 
             # Move command
@@ -89,7 +87,7 @@ def main():
             # Wait command
             elif choice_input.startswith('wait'):
                 print("You're just hanging around.")
-                turn_counter += 60
+                turn_counter += 2
             # Invalid command
             else:
                 print("That is not a valid option")
