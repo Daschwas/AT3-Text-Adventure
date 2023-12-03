@@ -59,29 +59,38 @@ def main():
             print(f"What would you like to do?\n")
             choice_input = input("Please choose:").lower().strip()
 
+            # Move command
             if choice_input.startswith('move'):
                 move_command(player, backpack, turn_counter)
                 turn_counter += 1
+            # Check command
             elif choice_input.startswith('check'):
                 turn_counter += 1
                 check_command(player, backpack, turn_counter)
+            # Talk command
             elif choice_input.startswith('talk'):
                 talk_command(player, backpack, [josh, mary, olivia, katie, mark, kento])
                 turn_counter += 1
+            # Look command
             elif choice_input.startswith('look'):
                 look_command(player, backpack)
                 turn_counter += 1
+            # Get command
             elif choice_input.startswith('get'):
                 get_command(player, backpack)
                 turn_counter += 1
+            # Use command
             elif choice_input.startswith('use'):
                 use_item(backpack, turn_counter)
                 turn_counter += 1
+            # Help command
             elif choice_input.startswith('help'):
                 help_command()
+            # Wait command
             elif choice_input.startswith('wait'):
                 print("You're just hanging around.")
                 turn_counter += 60
+            # Invalid command
             else:
                 print("That is not a valid option")
 

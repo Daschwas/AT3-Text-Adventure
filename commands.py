@@ -268,19 +268,25 @@ def check_command(player, backpack, turn_counter):
     print(f"Type 'time' if you want to check the current time.")
     print(f"Otherwise type an object if you wish to check that out.")
     check_input = input("Please choose:").lower().strip()
+    # Checks map
     if check_input.startswith('map'):
         player.game_map.display_map()
+    # Checks backpack inventory
     elif check_input.startswith('backpack'):
         backpack.list()
+    # Checks room
     elif check_input == "room":
         look_command(player, backpack)
+    # Checks the current time based on the turn_counter
     elif check_input == "time":
         if turn_counter <= 9:
             print(f"It is 4.0{turn_counter} pm")
         else:
             print(f"It is 4.{turn_counter} pm")
+    # Allows player to check vending machine.
     elif check_input.startswith("vending") and isinstance(player.room, FoodCourt):
         player.room.room_check(backpack)
+    # Checks wallet.
     elif check_input == "wallet" or "money":
         print(f"You have ${backpack.money}.")
     else:

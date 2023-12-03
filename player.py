@@ -80,7 +80,7 @@ class Player:
                         self.game_map.update_tilemap(current_row, current_col)
                         print(f"You moved {direction}.")
                         print(f"You have arrived in the {new_room.name}.")
-                        print(f" {new_room.description}.")
+                        print(f"{new_room.description}")
                     else:
                         print("It looks like you can't proceed through here at the moment.\n")
                 else:
