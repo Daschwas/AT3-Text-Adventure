@@ -30,9 +30,8 @@ def end_game(player, backpack):
         print("Not only did you get the item of your desire, the experience itself was also worth every moment.")
         print("You leave the mall with a sense of contentment.")
     # lose scenario: escaping with no valuable items
-    else:
-        print("Unfortunately, your shopping spree didn't go as planned and you leave largely empty-handed.")
-        print("Better luck next time!")
+    elif not has_watch and not has_camera:
+        print("Your shopping spree didn't go as planned and you leave largely empty-handed.")
         player.game_over = True
 
     # extra flavour text if player successfully fooled bank teller

@@ -36,11 +36,11 @@ class Josh(Person):
         """
         Greets the player and offers a Blank ID Card if requested.
         """
-        # Different dialogue trees depending on whether 
+        # Different dialogue trees depending on whether the player has the card or not.
         if backpack.in_backpack("Blank ID Card") != -1:
             print(f"{self.name} glances up as you approach.")
             print(f"{self.name}: Again? ")
-        elif backpack.in_backpack("Fake Card") != -1:
+        elif backpack.in_backpack("Fake ID Card") != -1:
             print(f"{self.name} glances up as you approach.")
             print(f"{self.name}: Did you write your name on my card? {player.name}, dude. Whatever.")
         else:
@@ -85,8 +85,8 @@ class Mary(Person):
         """
         super().__init__("Mary", "A salesperson at the Clothing Boutique.")
         # Items to sell
-        self.items.append(Scarf("Warm Scarf", 32))
-        self.items.append(Watch("Stylish Watch", 28))
+        self.items.append(Scarf("Warm Scarf", 33))
+        self.items.append(Watch("Stylish Watch", 26))
 
     def greet(self, player, backpack):
         """
@@ -208,7 +208,7 @@ class Olivia(Person):
         :param backpack: The player's backpack.
         """
         print(f"{self.name}: Oh, that's the scarf I wanted!")
-        choice = input("Will you give her the scarf? (Yes/No):").lower().strip()
+        choice = input("Will you give her the scarf? (Yes/No): ").lower().strip()
         if choice == "yes":
             # Different events depending on which scarf the player has.
             if backpack.in_backpack("Warm Scarf") != -1:
@@ -295,7 +295,7 @@ class Mark(Person):
         has_membership = backpack.in_backpack("Membership Card") != -1
         has_id = backpack.in_backpack("Fake ID Card") != -1
         print(f"{self.name}: So, you want to buy a Membership, yeah? Only ${membership_card.cost}.")
-        choice = input("Buy membership? (Yes/No) ").lower().strip()
+        choice = input("Buy membership? (Yes/No): ").lower().strip()
         if choice == "yes":
             if has_id or has_membership:
                 print(f"{self.name}: You can't become a member twice, mate.")
@@ -373,21 +373,21 @@ class Katie(Person):
             print(f"{self.name}: I love the enthusiasm, but we need to be sure you can pay it back, sorry.")
         else:
             print(f"{self.name}: I'll just get you to write your name here, if that's okay!")
-            signed_name = input("Please write your name:")
+            signed_name = input("Please write your name: \n")
             # If statement that determines if the player used a fake name or not when signing for the loan.
             # The name is matched against the name the player enters for the character at the start of the game.
             if signed_name == player.name:
-                print(f"You quickly write {signed_name} at the bottom of the document.")
+                print(f"You quickly write {signed_name} at the bottom of the document.\n")
                 backpack.add(loan_document.name)
             else:
-                print(f"You scribble {signed_name} at the bottom of the document instead of your real name.")
+                print(f"You scribble {signed_name} at the bottom of the document instead of your real name.\n")
                 backpack.add(fraud_document.name)
             # Adds money to the player's account.
             print(f"{self.name}: Here you go, one interest free loan.")
             print(f"You gained ${self.loan_amount}.")
             backpack.add_money(self.loan_amount)
             print(f"{self.name}: Oh? No, it's not free of interest - it comes with a 'free' loan!")
-            print(f"{self.name}: That's 80% weekly interest you will need to pay back. Enjoy!")
+            print(f"{self.name}: That's 80% weekly interest you will need to pay back. Enjoy!\n")
             (time.sleep(1))
             if signed_name == player.name:
                 print("Welp.")
